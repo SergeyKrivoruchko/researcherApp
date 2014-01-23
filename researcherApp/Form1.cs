@@ -16,7 +16,6 @@ namespace researcherApp
     {
         public struct ValueProps
         {
-            //public ValueProps() { }
 
             public ValueProps(int p1, int p2) 
             { 
@@ -75,6 +74,7 @@ namespace researcherApp
 
         private void ReadTables()
         {
+            comboBox1.Items.Clear();
             DirectoryInfo dir = new DirectoryInfo("tables");
             foreach (var item in dir.GetFiles())
                 comboBox1.Items.Add(item.Name);
@@ -87,7 +87,6 @@ namespace researcherApp
             g = Graphics.FromImage(forPainting);
             forPainting.MakeTransparent(Color.Coral);
             g.Clear(Color.White);
-            
             g.Dispose();
         }
 
@@ -262,39 +261,16 @@ namespace researcherApp
                 g.DrawLine(p, PaintFrom, new Point(e.X, e.Y));
                 PaintFrom.X = e.X;
                 PaintFrom.Y = e.Y;
-
-               // g.Dispose();
-               // g = Graphics.FromImage(pictureBox1.Image);
-
-                //g.DrawImage(forPainting, 0, 0);
                 pictureBox1.Invalidate();
                 
-                //g.Dispose();
+            
             }
 
             if (isErasing)
             {
-               /* Bitmap b = new Bitmap(Drow_grid());
-                Graphics g = Graphics.FromImage(b);
-                
-                GraphicsPath clipPath = new GraphicsPath();
-               // Bitmap b1 = new Bitmap(10,10);
-               // Graphics g2 = Graphics.FromImage(b1);
-               // g2.DrawImage(b, 0, 0, new Rectangle(e.X - 5, e.Y - 5, 10, 10), GraphicsUnit.Pixel);
-                clipPath.AddEllipse(e.X-5, e.Y-5, 10, 10);
-               // g.SetClip(clipPath);
-                
-                //g.DrawImage(pictureBox1.Image, e.X - 3, e.Y - 3);
-                //g.Dispose();
-               Graphics g1 = Graphics.FromImage(pictureBox1.Image);
-               g1.SetClip(clipPath);
-
-               g1.DrawImage(b, e.X - 5, e.Y - 5, new Rectangle(e.X - 5, e.Y - 5, 10, 10), GraphicsUnit.Pixel);
-               pictureBox1.Invalidate();*/
 
                 Bitmap b = new Bitmap(gridWidth * 2, gridHeight * 2, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                 Graphics g = Graphics.FromImage(b);
-                //b.MakeTransparent(Color.White);
                 g.Clear(Color.White);
                 int leftBorder = e.X / gridWidth;
                 int bottomBorder = e.Y / gridHeight;
@@ -383,7 +359,7 @@ namespace researcherApp
 
             //grid_values[e.RowIndex][e.ColumnIndex] = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
             grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
-            grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex+1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex+2].Value)));
+            grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value)));
             pictureBox1.Image = Drow_grid();
         }
 
@@ -405,21 +381,7 @@ namespace researcherApp
                     props.prop2= Convert.ToInt32(result[2]);
                     grid_values.Add(Convert.ToInt32(result[0]), props);
                 }
-                /*string[] key = line.Split(' ');
-                line = reader.ReadLine();
-                string[] prop1 = line.Split(' ');
-                line = reader.ReadLine();
-                string[] prop2 = line.Split(' ');
-                for (int i = 0; i < key.Length; i++)
-                {
-                    int[] prop = new int[3];
-                    prop[0] = Convert.ToInt32(key[i]);
-                    prop[1] = Convert.ToInt32(prop1[i]);
-                    prop[2] = Convert.ToInt32(prop2[i]);
-
-                    grid_values.Add(new List<int>(prop));
-
-                }*/
+               
             }
             pictureBox1.Image = Drow_grid();
             DataGridFill();
@@ -428,7 +390,7 @@ namespace researcherApp
         private void addToGrid_Click(object sender, EventArgs e)
         {
 
-           // grid_values.Add(new List<int>(new int[] {Convert.ToInt32(addKey.Text), Convert.ToInt32(addProp1.Text),Convert.ToInt32(addProp2.Text)}));
+           
             grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text),Convert.ToInt32(addProp2.Text)));
 
             dataGridView1.Rows.Add(Convert.ToInt32(addKey.Text), grid_values[Convert.ToInt32(addKey.Text)].prop1, grid_values[Convert.ToInt32(addKey.Text)].prop2);
@@ -440,7 +402,7 @@ namespace researcherApp
             if (canDelete)
             {
                 grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
-                //grid_values.RemoveAt(e.RowIndex);
+                
                 pictureBox1.Image = Drow_grid();
             }
         }
@@ -454,28 +416,66 @@ namespace researcherApp
 
         }
 
-       
+
 
         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            pictureBox1.Controls.Remove(dinamicTextBox);
-            dinamicTextBox = new TextBox();
-            dinamicTextBox.Height = gridHeight;
-            dinamicTextBox.Width = gridWidth;
-            dinamicTextBox.Parent = pictureBox1;
-            dinamicTextBox.Location = new Point((e.X/gridWidth)*gridWidth, (e.Y/gridHeight)*gridHeight);
-            dinamicTextBox.Focus();
-            dinamicTextBox.Leave += new EventHandler(deleteTextBox);
-            //dinamicTextBox.Text = grid_values[e.X / gridWidth-1][e.Y / gridHeight].ToString();
-            dinamicTextBox.Show();
+            if (e.X / gridWidth != 0)
+            {
+                pictureBox1.Controls.Remove(dinamicTextBox);
+                dinamicTextBox = new TextBox();
+                dinamicTextBox.Height = gridHeight;
+                dinamicTextBox.Width = gridWidth;
+                dinamicTextBox.Parent = pictureBox1;
+                dinamicTextBox.Location = new Point((e.X / gridWidth) * gridWidth, (e.Y / gridHeight) * gridHeight);
+                
+                dinamicTextBox.Leave += new EventHandler(deleteTextBox);
+                switch (e.Y / gridHeight)
+                {
+                    case 0: dinamicTextBox.Text = grid_values.ElementAt(e.X / gridWidth - 1).Key.ToString();
+                        break;
+                    case 1: dinamicTextBox.Text = grid_values.ElementAt(e.X / gridWidth - 1).Value.prop1.ToString();
+                        break;
+                    default: dinamicTextBox.Text = grid_values.ElementAt(e.X / gridWidth - 1).Value.prop2.ToString();
+                        break;
+                }
+                dinamicTextBox.Focus();
+
+
+                dinamicTextBox.Show();
+            }
         }
 
 
 
         private void deleteTextBox(object sender, EventArgs e)
         {
+            int newVal = Convert.ToInt32(dinamicTextBox.Text);
+            int col = dinamicTextBox.Location.X/gridWidth;
+            int row = dinamicTextBox.Location.Y/gridHeight;
+            if (row == 0)
+            {
+                ValueProps prop = grid_values.ElementAt(col - 1).Value;
+                grid_values.Remove(grid_values.ElementAt(col - 1).Key);
+                grid_values.Add(newVal, prop);
+                dataGridView1.Rows[col-1].Cells[0].Value = dinamicTextBox.Text;
+            }
+            else
+                if (row == 1)
+                {
+                    grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps(newVal, (grid_values.ElementAt(col - 1).Value.prop2));
+                    dataGridView1.Rows[col-1].Cells[1].Value = dinamicTextBox.Text;
+                }
+                else
+                {
+                    grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps((grid_values.ElementAt(col - 1).Value.prop1), newVal);
+                    dataGridView1.Rows[col-1].Cells[2].Value = dinamicTextBox.Text;
+                }
+
+            splitContainer2.Panel2.Focus();
             pictureBox1.Controls.Remove(dinamicTextBox);
             dinamicTextBox.Dispose();
+            pictureBox1.Image = Drow_grid();
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
@@ -507,6 +507,13 @@ namespace researcherApp
             eraser.Checked = false;
             isEraseCheked = false;
             isPencilChecked = true; ;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            splitContainer2.Panel2.Focus();
+           if (pictureBox1.Controls.Contains(dinamicTextBox))
+               pictureBox1.Controls.Remove(dinamicTextBox);
         }
 
     }
