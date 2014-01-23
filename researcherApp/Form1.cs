@@ -14,7 +14,22 @@ namespace researcherApp
 {
     public partial class Main : Form
     {
-        List<List<int>> grid_values = new List<List<int>>();
+        public struct ValueProps
+        {
+            //public ValueProps() { }
+
+            public ValueProps(int p1, int p2) 
+            { 
+                prop1=p1;
+                prop2=p2;
+            }
+
+            public int prop1;
+            public int prop2;
+        }
+
+        Dictionary<int, ValueProps> grid_values = new Dictionary<int, ValueProps>();
+
         public string FileName = "";
         TextBox dinamicTextBox;
         bool isPainting = false, isPencilChecked=false, canDelete=true, isErasing=false, isEraseCheked=false;
@@ -46,13 +61,15 @@ namespace researcherApp
                     dataGridView1.Rows.RemoveAt(i);
             }
             canDelete = true;
-            
 
-            for (int i = 0; i < grid_values.Count; i++) 
+
+            int j = 0;
+            foreach (KeyValuePair<int, ValueProps> pair in grid_values)
             {
-                dataGridView1.Rows[i].Cells[0].Value = grid_values[i][0];
-                dataGridView1.Rows[i].Cells[1].Value = grid_values[i][1];
-                dataGridView1.Rows[i].Cells[2].Value = grid_values[i][2];
+                dataGridView1.Rows[j].Cells[0].Value = pair.Key;
+                dataGridView1.Rows[j].Cells[1].Value = pair.Value.prop1;
+                dataGridView1.Rows[j].Cells[2].Value = pair.Value.prop2;
+                j++;
             }
         }
 
@@ -105,21 +122,21 @@ namespace researcherApp
 
             Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            
 
-           
 
-                    for (int i = 1; i <= grid_values.Count; i++)
-                    {
-                        g.DrawString(grid_values[i-1][0].ToString(), f, Brushes.Black, Cell_Position(grid_values[i-1][0].ToString(), f, i, 0));
-                        g.DrawString(grid_values[i-1][1].ToString(), f, Brushes.Black, Cell_Position(grid_values[i-1][1].ToString(), f, i, 1));
-                    }
 
-                    for (int j = 1; j <= grid_values.Count; j++)
-                    for (int i = 2; i <= gridRows+1; i++)
-                    
-                        g.DrawString(grid_values[j-1][2].ToString(), f, Brushes.Black, Cell_Position(grid_values[j-1][2].ToString(), f, j, i));
-                       
+
+
+            for (int i = 1; i <= grid_values.Count; i++)
+            {
+                g.DrawString(grid_values.ElementAt(i-1).Key.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(i-1).Key.ToString(), f, i, 0));
+                g.DrawString(grid_values.ElementAt(i-1).Value.prop1.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(i-1).Value.prop1.ToString(), f, i, 1));
+            }
+
+            for (int j = 1; j <= grid_values.Count; j++)
+                for (int i = 2; i <= gridRows+1; i++)
+
+                    g.DrawString(grid_values.ElementAt(j-1).Value.prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(j-1).Value.prop1.ToString(), f, j, i));
                     
                 
             
@@ -148,12 +165,12 @@ namespace researcherApp
             Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             for (int i = 0; i < grid_values.Count; i++)
-                for (int j = i + 1; j < grid_values.Count; j++) 
-                    if (grid_values[i][1] == grid_values[j][2])
+                for (int j = i + 1; j < grid_values.Count; j++)
+                    if (grid_values.ElementAt(i).Value.prop1 == grid_values.ElementAt(j).Value.prop2)
                     {
-                       
+                        // if ((gridWidth * (j) +gridWidth <=pictureBox1.Image.Width) && ( gridHeight * (j - i + 1)  +gridHeight <=pictureBox1.Image.Height ))
                         g.FillRectangle(Brushes.Yellow, new Rectangle(gridWidth * (j + 1) + 1, gridHeight * (j - i + 1) + 1, gridWidth - 1, gridHeight - 1));
-                        g.DrawString(grid_values[j][2].ToString(), f, Brushes.Black, Cell_Position(grid_values[j][2].ToString(), f, j + 1, j - i + 1));
+                        g.DrawString(grid_values.ElementAt(j).Value.prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(j).Value.prop2.ToString(), f, j + 1, j - i + 1));
                     }
            
             
@@ -177,17 +194,14 @@ namespace researcherApp
             {
                 StreamWriter writer = new StreamWriter("tables/"+FileName+".txt");
 
-                for (int j = 0; j < 3; j++)
-                {
-                    for (int i = 0; i < grid_values.Count; i++)
+                
+                    foreach (KeyValuePair<int, ValueProps> pair in grid_values)
                     {
-                        writer.Write(grid_values[i][j]);
-                        if (i != grid_values.Count - 1)
-                            writer.Write(" ");
+                        writer.Write(pair.Key + " " + pair.Value.prop1 + " " + pair.Value.prop2);
+                        writer.WriteLine();
                     }
-                    writer.WriteLine();
+                    
 
-                }
                 
                 writer.Close();
             }
@@ -303,16 +317,16 @@ namespace researcherApp
                     {
                         if (bottomBorder>1)
                         if ((leftBorder + i) - (bottomBorder + j) >= 0)
-                            if (grid_values[(leftBorder + i - 1)][2] == grid_values[(leftBorder + i - 1) - (bottomBorder - j - 1)][1])
+                            if (grid_values.ElementAt(leftBorder + i - 1).Value.prop2 == grid_values.ElementAt((leftBorder + i - 1) - (bottomBorder - j - 1)).Value.prop1)
                                 g.FillRectangle(Brushes.Yellow, new Rectangle(gridWidth * i + 1, gridHeight * j + 1, gridWidth - 1, gridHeight - 1));
                         if (bottomBorder==0)
-                            g.DrawString(grid_values[leftBorder-1][0].ToString(), f, Brushes.Black, Cell_Position(grid_values[leftBorder-1][0].ToString(), f, i, 0));
+                            g.DrawString(grid_values.ElementAt(leftBorder-1).Key.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(leftBorder-1).Key.ToString(), f, i, 0));
                         else
                         if (bottomBorder == 1)
-                            g.DrawString(grid_values[leftBorder - 1][1].ToString(), f, Brushes.Black, Cell_Position(grid_values[leftBorder - 1][1].ToString(), f, i, 0));
+                            g.DrawString(grid_values.ElementAt(leftBorder - 1).Value.prop1.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(leftBorder - 1).Value.prop1.ToString(), f, i, 0));
                         else
                         
-                                g.DrawString(grid_values[leftBorder - 1][2].ToString(), f, Brushes.Black, Cell_Position(grid_values[leftBorder - 1][2].ToString(), f, i, 0));
+                                g.DrawString(grid_values.ElementAt(leftBorder - 1).Value.prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(leftBorder - 1).Value.prop2.ToString(), f, i, 0));
                     }
                     
                 
@@ -365,11 +379,11 @@ namespace researcherApp
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-           /* if (e.RowIndex > grid_values.Count)
-                
-                grid_values.Add(new List<int>(new int[] {1,1,1}));*/
+           
 
-            grid_values[e.RowIndex][e.ColumnIndex] = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            //grid_values[e.RowIndex][e.ColumnIndex] = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
+            grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex+1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex+2].Value)));
             pictureBox1.Image = Drow_grid();
         }
 
@@ -382,8 +396,16 @@ namespace researcherApp
 
 
 
-                line = reader.ReadLine();
-                string[] key = line.Split(' ');
+                while ((line = reader.ReadLine()) != null)
+                {
+                    ValueProps props;
+                    
+                    string[] result = line.Split(' ');
+                    props.prop1= Convert.ToInt32(result[1]);
+                    props.prop2= Convert.ToInt32(result[2]);
+                    grid_values.Add(Convert.ToInt32(result[0]), props);
+                }
+                /*string[] key = line.Split(' ');
                 line = reader.ReadLine();
                 string[] prop1 = line.Split(' ');
                 line = reader.ReadLine();
@@ -397,7 +419,7 @@ namespace researcherApp
 
                     grid_values.Add(new List<int>(prop));
 
-                }
+                }*/
             }
             pictureBox1.Image = Drow_grid();
             DataGridFill();
@@ -405,8 +427,11 @@ namespace researcherApp
 
         private void addToGrid_Click(object sender, EventArgs e)
         {
-            grid_values.Add(new List<int>(new int[] {Convert.ToInt32(addKey.Text), Convert.ToInt32(addProp1.Text),Convert.ToInt32(addProp2.Text)}));
-            dataGridView1.Rows.Add(grid_values[grid_values.Count-1][0], grid_values[grid_values.Count-1][1], grid_values[grid_values.Count-1][2]);
+
+           // grid_values.Add(new List<int>(new int[] {Convert.ToInt32(addKey.Text), Convert.ToInt32(addProp1.Text),Convert.ToInt32(addProp2.Text)}));
+            grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text),Convert.ToInt32(addProp2.Text)));
+
+            dataGridView1.Rows.Add(Convert.ToInt32(addKey.Text), grid_values[Convert.ToInt32(addKey.Text)].prop1, grid_values[Convert.ToInt32(addKey.Text)].prop2);
             pictureBox1.Image = Drow_grid();
         }
 
@@ -414,7 +439,8 @@ namespace researcherApp
         {
             if (canDelete)
             {
-                grid_values.RemoveAt(e.RowIndex);
+                grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
+                //grid_values.RemoveAt(e.RowIndex);
                 pictureBox1.Image = Drow_grid();
             }
         }
