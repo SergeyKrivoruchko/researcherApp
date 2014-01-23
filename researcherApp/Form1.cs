@@ -36,6 +36,7 @@ namespace researcherApp
         Point PaintFrom = new Point(0, 0);
         String[] baseColors = {"Red", "Green", "Blue", "Yellow"};
         int gridHeight = 20, gridWidth = 70, gridRows = 30, gridCols = 300;
+        bool endEditCell = false;
         public Main()
         {
             InitializeComponent();
@@ -105,7 +106,7 @@ namespace researcherApp
             Bitmap b;
 
 
-
+             if (grid_values.Count>gridCols)
              gridCols = grid_values.Count;
 
             b = new Bitmap(gridWidth*(gridCols+1), gridHeight*(gridRows+2));
@@ -356,8 +357,6 @@ namespace researcherApp
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
            
-
-            //grid_values[e.RowIndex][e.ColumnIndex] = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
             grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
             grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value)));
             pictureBox1.Image = Drow_grid();
@@ -390,11 +389,15 @@ namespace researcherApp
         private void addToGrid_Click(object sender, EventArgs e)
         {
 
-           
-            grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text),Convert.ToInt32(addProp2.Text)));
+            if (grid_values.ContainsKey(Convert.ToInt32(addKey.Text)))
+                MessageBox.Show("Таблица данных не может содержать два одинаковых значения!", "Ошибка",MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
+            {
+                grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text), Convert.ToInt32(addProp2.Text)));
 
-            dataGridView1.Rows.Add(Convert.ToInt32(addKey.Text), grid_values[Convert.ToInt32(addKey.Text)].prop1, grid_values[Convert.ToInt32(addKey.Text)].prop2);
-            pictureBox1.Image = Drow_grid();
+                dataGridView1.Rows.Add(Convert.ToInt32(addKey.Text), grid_values[Convert.ToInt32(addKey.Text)].prop1, grid_values[Convert.ToInt32(addKey.Text)].prop2);
+                pictureBox1.Image = Drow_grid();
+            }
         }
 
         private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -430,6 +433,7 @@ namespace researcherApp
                 dinamicTextBox.Location = new Point((e.X / gridWidth) * gridWidth, (e.Y / gridHeight) * gridHeight);
                 
                 dinamicTextBox.Leave += new EventHandler(deleteTextBox);
+                if (grid_values.Count>e.X / gridWidth - 1)
                 switch (e.Y / gridHeight)
                 {
                     case 0: dinamicTextBox.Text = grid_values.ElementAt(e.X / gridWidth - 1).Key.ToString();
@@ -453,25 +457,42 @@ namespace researcherApp
             int newVal = Convert.ToInt32(dinamicTextBox.Text);
             int col = dinamicTextBox.Location.X/gridWidth;
             int row = dinamicTextBox.Location.Y/gridHeight;
-            if (row == 0)
+            if (grid_values.Count > col - 1)
             {
-                ValueProps prop = grid_values.ElementAt(col - 1).Value;
-                grid_values.Remove(grid_values.ElementAt(col - 1).Key);
-                grid_values.Add(newVal, prop);
-                dataGridView1.Rows[col-1].Cells[0].Value = dinamicTextBox.Text;
-            }
-            else
-                if (row == 1)
+                if (row == 0)
                 {
-                    grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps(newVal, (grid_values.ElementAt(col - 1).Value.prop2));
-                    dataGridView1.Rows[col-1].Cells[1].Value = dinamicTextBox.Text;
+                    if ((grid_values.ContainsKey(newVal))&&(newVal!=grid_values.ElementAt(col-1).Key))
+                    {
+                        MessageBox.Show("Таблица данных не может содержать два одинаковых значения!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+            
+                    ValueProps prop = grid_values.ElementAt(col - 1).Value;
+                    grid_values.Remove(grid_values.ElementAt(col - 1).Key);
+                    grid_values.Add(newVal, prop);
+                    dataGridView1.Rows[col - 1].Cells[0].Value = dinamicTextBox.Text;
                 }
                 else
+                    if (row == 1)
+                    {
+                        grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps(newVal, (grid_values.ElementAt(col - 1).Value.prop2));
+                        dataGridView1.Rows[col - 1].Cells[1].Value = dinamicTextBox.Text;
+                    }
+                    else
+                    {
+                        grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps((grid_values.ElementAt(col - 1).Value.prop1), newVal);
+                        dataGridView1.Rows[col - 1].Cells[2].Value = dinamicTextBox.Text;
+                    }
+            }
+            else
+            {
+                if (row == 0)
                 {
-                    grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps((grid_values.ElementAt(col - 1).Value.prop1), newVal);
-                    dataGridView1.Rows[col-1].Cells[2].Value = dinamicTextBox.Text;
+                    grid_values.Add(newVal, new ValueProps());
+                    dataGridView1.Rows.Add();
+                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0].Value = newVal;
                 }
-
+            }
             splitContainer2.Panel2.Focus();
             pictureBox1.Controls.Remove(dinamicTextBox);
             dinamicTextBox.Dispose();
@@ -514,6 +535,17 @@ namespace researcherApp
             splitContainer2.Panel2.Focus();
            if (pictureBox1.Controls.Contains(dinamicTextBox))
                pictureBox1.Controls.Remove(dinamicTextBox);
+        }
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.FormattedValue.ToString()!=dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString())
+            if (grid_values.ContainsKey(Convert.ToInt32(e.FormattedValue)))
+            {
+                MessageBox.Show("Таблица данных не может содержать два одинаковых значения!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.Cancel = true;
+                
+            }
         }
 
     }
