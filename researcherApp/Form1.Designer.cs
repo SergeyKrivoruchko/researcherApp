@@ -135,6 +135,7 @@
             this.настройкаToolStripMenuItem.Name = "настройкаToolStripMenuItem";
             this.настройкаToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
             this.настройкаToolStripMenuItem.Text = "Настройка";
+            this.настройкаToolStripMenuItem.Click += new System.EventHandler(this.настройкаToolStripMenuItem_Click);
             // 
             // видToolStripMenuItem
             // 
@@ -310,6 +311,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(222, 276);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
+            this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
             // 
             // key
@@ -534,12 +536,12 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        public System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ComboBox colorComboBox;
         private System.Windows.Forms.CheckBox pencil;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown pencilSize;
+        public System.Windows.Forms.NumericUpDown pencilSize;
         private System.Windows.Forms.Button ClearAllNotes;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn key;

@@ -35,16 +35,21 @@ namespace researcherApp
         Bitmap forPainting;
         Point PaintFrom = new Point(0, 0);
         String[] baseColors = {"Red", "Green", "Blue", "Yellow"};
-        int gridHeight = 20, gridWidth = 70, gridRows = 30, gridCols = 300;
-        bool endEditCell = false;
+        int gridHeight = 20, gridWidth = 70;
+        public int gridRows, gridCols, currentPencilSize;
+        
         public Main()
         {
             InitializeComponent();
+            gridRows = Properties.Settings.Default.gridRows;
+            gridCols = Properties.Settings.Default.gridCols;
+            pencilSize.Value = Properties.Settings.Default.pencilSize;
+
             ReadTables();
             pictureBox1.Image = Drow_grid();
             DataGridFill();
             GetColors();
-           initializeBitMap(gridWidth * (gridCols+1), gridHeight * (gridRows+2));
+            //initializeBitMap(gridWidth * (gridCols+1), gridHeight * (gridRows+2));
             
            
         }
@@ -100,7 +105,7 @@ namespace researcherApp
             colorComboBox.SelectedIndex = 0;
         }
 
-        private Bitmap Drow_grid()
+        public Bitmap Drow_grid()
         {
             Graphics g;
             Bitmap b;
@@ -546,6 +551,13 @@ namespace researcherApp
                 e.Cancel = true;
                 
             }
+        }
+
+        private void настройкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings f = new Settings();
+            f.Owner = this;
+            f.ShowDialog();
         }
 
     }
