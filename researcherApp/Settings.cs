@@ -31,14 +31,14 @@ namespace researcherApp
         {
             sequencesList.Items.Add(currentSequence.Text);
             currentSequence.Clear();
+            currentSequence.Focus();
         }
 
         private void deleteSequence_Click(object sender, EventArgs e)
         {
-            foreach (int index in sequencesList.SelectedIndices)
-            {
-                sequencesList.Items.RemoveAt(index);
-            }
+            for (int i = 0; i < sequencesList.Items.Count; i++)
+                if (sequencesList.GetItemCheckState(i) == CheckState.Checked)
+                    sequencesList.Items.RemoveAt(i);
         }
 
         private void sequencesList_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -66,13 +66,15 @@ namespace researcherApp
             Properties.Settings.Default.Sequences.AddRange(seq);
             Properties.Settings.Default.Save();
             Main m = this.Owner as Main;
-            if ((m.gridCols != Properties.Settings.Default.gridCols) || (m.gridRows != Properties.Settings.Default.gridRows))
-            {
+            
+            //if ((m.gridCols != Properties.Settings.Default.gridCols) || (m.gridRows != Properties.Settings.Default.gridRows) || (m.sequences!=Properties.Settings.Default.Sequences))
+            //{
                 m.gridCols = Properties.Settings.Default.gridCols;
                 m.gridRows = Properties.Settings.Default.gridRows;
                 m.pictureBox1.Image = m.Drow_grid();
-            }
+            //}
             m.pencilSize.Value = Properties.Settings.Default.pencilSize;
+            m.sequences = Properties.Settings.Default.Sequences;
 
             this.Close();
 

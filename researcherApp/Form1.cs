@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
+using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 
 
 namespace researcherApp
@@ -37,6 +39,7 @@ namespace researcherApp
         String[] baseColors = {"Red", "Green", "Blue", "Yellow"};
         int gridHeight = 20, gridWidth = 70;
         public int gridRows, gridCols, currentPencilSize;
+        public StringCollection sequences = new StringCollection();
         
         public Main()
         {
@@ -44,6 +47,7 @@ namespace researcherApp
             gridRows = Properties.Settings.Default.gridRows;
             gridCols = Properties.Settings.Default.gridCols;
             pencilSize.Value = Properties.Settings.Default.pencilSize;
+            sequences = Properties.Settings.Default.Sequences;
 
             ReadTables();
             pictureBox1.Image = Drow_grid();
@@ -52,6 +56,31 @@ namespace researcherApp
             //initializeBitMap(gridWidth * (gridCols+1), gridHeight * (gridRows+2));
             
            
+        }
+
+        private void highliteSequence(Bitmap b)
+
+        {
+            Graphics g = Graphics.FromImage(b);
+
+            for (int i = 0; i < grid_values.Count - 1; i++)
+            {
+                StringBuilder str = new StringBuilder(new string('A', gridRows));
+                for (int j = 0; j < i; j++)
+                    if (grid_values.ElementAt(i).Value.prop2 == grid_values.ElementAt(i-(j+1)).Value.prop1)
+                        str[j] = 'B';
+                for (int j = 0; j < sequences.Count; j++)
+                {
+                    
+                    Regex rgx = new Regex(sequences[j]);
+                    string sentence = str.ToString();
+                    foreach (Match match in rgx.Matches(sentence))
+                    {
+                        g.DrawRectangle(Pens.Red, gridWidth * (i+1), gridHeight * (match.Index+2), gridWidth, gridHeight * sequences[j].Length);
+                    }
+                }
+                
+                }
         }
 
         private void DataGridFill()
@@ -157,6 +186,7 @@ namespace researcherApp
            // b.Dispose();
             GC.Collect();
             Find_Similar(b);
+            highliteSequence(b);
             return b;
         }
 
