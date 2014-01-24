@@ -29,7 +29,7 @@ namespace researcherApp
             public int prop2;
         }
 
-        Dictionary<int, ValueProps> grid_values = new Dictionary<int, ValueProps>();
+        public Dictionary<int, ValueProps> grid_values = new Dictionary<int, ValueProps>();
 
         public string FileName = "";
         TextBox dinamicTextBox;
@@ -66,7 +66,7 @@ namespace researcherApp
             for (int i = 0; i < grid_values.Count - 1; i++)
             {
                 StringBuilder str = new StringBuilder(new string('A', gridRows));
-                for (int j = 0; j < i; j++)
+                for (int j = 0; j < Math.Min(i, gridRows); j++)
                     if (grid_values.ElementAt(i).Value.prop2 == grid_values.ElementAt(i-(j+1)).Value.prop1)
                         str[j] = 'B';
                 for (int j = 0; j < sequences.Count; j++)
@@ -76,7 +76,7 @@ namespace researcherApp
                     string sentence = str.ToString();
                     foreach (Match match in rgx.Matches(sentence))
                     {
-                        g.DrawRectangle(Pens.Red, gridWidth * (i+1), gridHeight * (match.Index+2), gridWidth, gridHeight * sequences[j].Length);
+                        g.DrawRectangle(new Pen(Color.Red, 2), gridWidth * (i+1), gridHeight * (match.Index+2), gridWidth, gridHeight * sequences[j].Length);
                     }
                 }
                 

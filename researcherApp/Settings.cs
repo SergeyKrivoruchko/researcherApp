@@ -56,6 +56,18 @@ namespace researcherApp
 
         private void accept_Click(object sender, EventArgs e)
         {
+            Main m = this.Owner as Main;
+            DialogResult res;
+            if (m.grid_values.Count > Convert.ToInt32(colCount.Text))
+            {
+                res = MessageBox.Show("Количество устанавливаемых столбцов меньше количества столбцов в таблице. Все равно продолжить?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (res == DialogResult.OK)
+                    for (int i = Convert.ToInt32(colCount.Text); i < m.grid_values.Count; i++)
+                        m.grid_values.Remove(m.grid_values.ElementAt(m.grid_values.Count-1).Key);
+                else
+                    return;
+            }
+            
             Properties.Settings.Default.gridCols = Convert.ToInt32(colCount.Text);
             Properties.Settings.Default.gridRows = Convert.ToInt32(rowCount.Text);
             Properties.Settings.Default.pencilSize = Convert.ToInt32(pencilSize.Value);
@@ -65,10 +77,11 @@ namespace researcherApp
             Properties.Settings.Default.Sequences.Clear();
             Properties.Settings.Default.Sequences.AddRange(seq);
             Properties.Settings.Default.Save();
-            Main m = this.Owner as Main;
+            
             
             //if ((m.gridCols != Properties.Settings.Default.gridCols) || (m.gridRows != Properties.Settings.Default.gridRows) || (m.sequences!=Properties.Settings.Default.Sequences))
             //{
+            
                 m.gridCols = Properties.Settings.Default.gridCols;
                 m.gridRows = Properties.Settings.Default.gridRows;
                 m.pictureBox1.Image = m.Drow_grid();

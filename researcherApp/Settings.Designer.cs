@@ -84,9 +84,9 @@
             this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(10, 60);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 13);
+            this.label2.Size = new System.Drawing.Size(116, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Количество ячеек";
+            this.label2.Text = "Количество столбцов";
             // 
             // label1
             // 

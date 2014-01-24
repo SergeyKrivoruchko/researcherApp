@@ -230,7 +230,7 @@
             // 
             this.addToGrid.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.addToGrid.Enabled = false;
-            this.addToGrid.Location = new System.Drawing.Point(57, 128);
+            this.addToGrid.Location = new System.Drawing.Point(64, 128);
             this.addToGrid.Name = "addToGrid";
             this.addToGrid.Size = new System.Drawing.Size(115, 29);
             this.addToGrid.TabIndex = 18;
@@ -268,7 +268,7 @@
             // addProp2
             // 
             this.addProp2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addProp2.Location = new System.Drawing.Point(145, 98);
+            this.addProp2.Location = new System.Drawing.Point(134, 95);
             this.addProp2.Name = "addProp2";
             this.addProp2.Size = new System.Drawing.Size(83, 20);
             this.addProp2.TabIndex = 14;
@@ -277,7 +277,7 @@
             // addProp1
             // 
             this.addProp1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addProp1.Location = new System.Drawing.Point(145, 63);
+            this.addProp1.Location = new System.Drawing.Point(134, 63);
             this.addProp1.Name = "addProp1";
             this.addProp1.Size = new System.Drawing.Size(83, 20);
             this.addProp1.TabIndex = 13;
@@ -286,7 +286,7 @@
             // addKey
             // 
             this.addKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addKey.Location = new System.Drawing.Point(145, 32);
+            this.addKey.Location = new System.Drawing.Point(134, 32);
             this.addKey.Name = "addKey";
             this.addKey.Size = new System.Drawing.Size(83, 20);
             this.addKey.TabIndex = 12;
@@ -297,7 +297,10 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.key,
@@ -308,7 +311,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(222, 276);
+            this.dataGridView1.Size = new System.Drawing.Size(219, 276);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
@@ -335,7 +338,7 @@
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button1.Location = new System.Drawing.Point(41, 501);
+            this.button1.Location = new System.Drawing.Point(40, 501);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(158, 23);
             this.button1.TabIndex = 2;
@@ -350,7 +353,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(13, 23);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(217, 21);
+            this.comboBox1.Size = new System.Drawing.Size(212, 21);
             this.comboBox1.TabIndex = 3;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
