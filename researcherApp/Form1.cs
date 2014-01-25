@@ -333,9 +333,11 @@ namespace researcherApp
                     for (int j = 0; j < 2; j++)
                     {
                         if (bottomBorder>1)
+
                         if ((leftBorder + i) - (bottomBorder + j) >= 0)
-                            if (grid_values.ElementAt(leftBorder + i - 1).Value.prop2 == grid_values.ElementAt((leftBorder + i - 1) - (bottomBorder - j - 1)).Value.prop1)
+                            if (grid_values.ElementAt(leftBorder + i - 1).Value.prop2 == grid_values.ElementAt((leftBorder + i -1) - (bottomBorder+j-1)).Value.prop1)
                                 g.FillRectangle(Brushes.Yellow, new Rectangle(gridWidth * i + 1, gridHeight * j + 1, gridWidth - 1, gridHeight - 1));
+
                         if (bottomBorder==0)
                             g.DrawString(grid_values.ElementAt(leftBorder-1).Key.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(leftBorder-1).Key.ToString(), f, i, 0));
                         else
@@ -345,7 +347,7 @@ namespace researcherApp
                         
                                 g.DrawString(grid_values.ElementAt(leftBorder - 1).Value.prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(leftBorder - 1).Value.prop2.ToString(), f, i, 0));
                     }
-                    
+                pictureBox2.Image = b;
                 
                 
                 GraphicsPath clipPath = new GraphicsPath();
@@ -617,10 +619,6 @@ namespace researcherApp
                 ObjWorkBook = ObjExcel.Workbooks.Add(System.Reflection.Missing.Value);
 
                 ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[1];
-                int [,] a = new int[2,2];
-                
-
-               // ObjWorkSheet.get_Range(a);
                 ObjExcel.Cells[1, 1] = "Значения";
                 ObjExcel.Cells[2, 1] = "Свойство1";
                 for (int i = 1; i <= gridRows; i++)

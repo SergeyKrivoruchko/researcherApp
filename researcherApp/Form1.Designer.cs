@@ -67,6 +67,7 @@
             this.key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.prop1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.prop2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -80,6 +81,7 @@
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pencilSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -223,6 +225,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.pictureBox2);
             this.groupBox1.Controls.Add(this.addToGrid);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
@@ -499,6 +502,14 @@
             this.prop2.HeaderText = "Свойство 2";
             this.prop2.Name = "prop2";
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(31, 24);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(186, 123);
+            this.pictureBox2.TabIndex = 19;
+            this.pictureBox2.TabStop = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -527,6 +538,7 @@
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pencilSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -573,6 +585,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn key;
         private System.Windows.Forms.DataGridViewTextBoxColumn prop1;
         private System.Windows.Forms.DataGridViewTextBoxColumn prop2;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 
