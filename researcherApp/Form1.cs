@@ -10,6 +10,8 @@ using System.IO;
 using System.Drawing.Drawing2D;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using excel=Microsoft.Office.Interop.Excel;
+
 
 
 namespace researcherApp
@@ -588,6 +590,58 @@ namespace researcherApp
             Settings f = new Settings();
             f.Owner = this;
             f.ShowDialog();
+        }
+
+        private void показатьВерхнююПанельToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splitContainer2.Panel1Collapsed = !splitContainer2.Panel1Collapsed;
+        }
+
+        private void показатьЛевуюПанельToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
+        }
+
+        private void експортТаблицыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.ShowDialog();
+            if (saveFileDialog.FileName != "")
+            {
+                Microsoft.Office.Interop.Excel.Application ObjExcel;
+                Microsoft.Office.Interop.Excel.Workbook ObjWorkBook;
+                Microsoft.Office.Interop.Excel.Worksheet ObjWorkSheet;
+                ObjExcel = new excel.Application();
+                ObjWorkBook = ObjExcel.Workbooks.Add(System.Reflection.Missing.Value);
+
+                ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[1];
+                int [,] a = new int[2,2];
+                
+
+               // ObjWorkSheet.get_Range(a);
+                ObjExcel.Cells[1, 1] = "Значения";
+                ObjExcel.Cells[2, 1] = "Свойство1";
+                for (int i = 1; i <= gridRows; i++)
+                    ObjExcel.Cells[i+2, 1]=i;
+                for (int i=0; i<grid_values.Count; i++)
+                {
+                    
+                    ObjExcel.Cells[1,i+2]=grid_values.ElementAt(i).Key;
+                    ObjExcel.Cells[2,i+2]=grid_values.ElementAt(i).Value.prop1;
+                    for (int j=1; j<=gridRows; j++)
+                       
+                        ObjExcel.Cells[j+2,i+2] = grid_values.ElementAt(i).Value.prop2;
+                        
+                }
+                ObjWorkBook.SaveAs(saveFileDialog.FileName+".xlsx");
+                ObjWorkBook.Close();
+                ObjExcel.Quit();
+                ObjWorkBook = null;
+                ObjWorkSheet = null;
+                ObjExcel = null;
+
+
+
+            }
         }
 
     }

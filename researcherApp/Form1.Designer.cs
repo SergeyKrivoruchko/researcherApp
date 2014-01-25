@@ -117,6 +117,7 @@
             this.експортТаблицыToolStripMenuItem.Name = "експортТаблицыToolStripMenuItem";
             this.експортТаблицыToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.експортТаблицыToolStripMenuItem.Text = "Експорт таблицы";
+            this.експортТаблицыToolStripMenuItem.Click += new System.EventHandler(this.експортТаблицыToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -165,14 +166,16 @@
             // показатьВерхнююПанельToolStripMenuItem
             // 
             this.показатьВерхнююПанельToolStripMenuItem.Name = "показатьВерхнююПанельToolStripMenuItem";
-            this.показатьВерхнююПанельToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.показатьВерхнююПанельToolStripMenuItem.Text = "Показать верхнюю панель";
+            this.показатьВерхнююПанельToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.показатьВерхнююПанельToolStripMenuItem.Text = "Показать/скрыть верхнюю панель";
+            this.показатьВерхнююПанельToolStripMenuItem.Click += new System.EventHandler(this.показатьВерхнююПанельToolStripMenuItem_Click);
             // 
             // показатьЛевуюПанельToolStripMenuItem
             // 
             this.показатьЛевуюПанельToolStripMenuItem.Name = "показатьЛевуюПанельToolStripMenuItem";
-            this.показатьЛевуюПанельToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
-            this.показатьЛевуюПанельToolStripMenuItem.Text = "Показать левую панель";
+            this.показатьЛевуюПанельToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.показатьЛевуюПанельToolStripMenuItem.Text = "Показать/скрыть левую панель";
+            this.показатьЛевуюПанельToolStripMenuItem.Click += new System.EventHandler(this.показатьЛевуюПанельToolStripMenuItem_Click);
             // 
             // уменшитьРазмерЯчеекToolStripMenuItem
             // 
@@ -191,6 +194,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -360,6 +364,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -484,8 +489,8 @@
             // 
             // saveFileDialog
             // 
-            this.saveFileDialog.DefaultExt = "*.txt";
-            this.saveFileDialog.Filter = "Текстовые файлы (*.txt)|*.txt\"";
+            this.saveFileDialog.AddExtension = false;
+            this.saveFileDialog.Filter = "Файлы електронных таблиц (*.xls)|*.xls";
             // 
             // Main
             // 
