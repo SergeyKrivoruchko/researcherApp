@@ -52,9 +52,6 @@
             this.addProp1 = new System.Windows.Forms.TextBox();
             this.addKey = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prop1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prop2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -67,6 +64,9 @@
             this.colorComboBox = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prop1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prop2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -165,16 +165,22 @@
             // 
             // показатьВерхнююПанельToolStripMenuItem
             // 
+            this.показатьВерхнююПанельToolStripMenuItem.Checked = true;
+            this.показатьВерхнююПанельToolStripMenuItem.CheckOnClick = true;
+            this.показатьВерхнююПанельToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.показатьВерхнююПанельToolStripMenuItem.Name = "показатьВерхнююПанельToolStripMenuItem";
-            this.показатьВерхнююПанельToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.показатьВерхнююПанельToolStripMenuItem.Text = "Показать/скрыть верхнюю панель";
+            this.показатьВерхнююПанельToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.показатьВерхнююПанельToolStripMenuItem.Text = "Показать верхнюю панель";
             this.показатьВерхнююПанельToolStripMenuItem.Click += new System.EventHandler(this.показатьВерхнююПанельToolStripMenuItem_Click);
             // 
             // показатьЛевуюПанельToolStripMenuItem
             // 
+            this.показатьЛевуюПанельToolStripMenuItem.Checked = true;
+            this.показатьЛевуюПанельToolStripMenuItem.CheckOnClick = true;
+            this.показатьЛевуюПанельToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.показатьЛевуюПанельToolStripMenuItem.Name = "показатьЛевуюПанельToolStripMenuItem";
-            this.показатьЛевуюПанельToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.показатьЛевуюПанельToolStripMenuItem.Text = "Показать/скрыть левую панель";
+            this.показатьЛевуюПанельToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.показатьЛевуюПанельToolStripMenuItem.Text = "Показать левую панель";
             this.показатьЛевуюПанельToolStripMenuItem.Click += new System.EventHandler(this.показатьЛевуюПанельToolStripMenuItem_Click);
             // 
             // уменшитьРазмерЯчеекToolStripMenuItem
@@ -321,24 +327,6 @@
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
             // 
-            // key
-            // 
-            this.key.HeaderText = "Значение";
-            this.key.Name = "key";
-            this.key.Width = 60;
-            // 
-            // prop1
-            // 
-            this.prop1.HeaderText = "Свойство 1";
-            this.prop1.Name = "prop1";
-            this.prop1.Width = 70;
-            // 
-            // prop2
-            // 
-            this.prop2.HeaderText = "Свойство 2";
-            this.prop2.Name = "prop2";
-            this.prop2.Width = 70;
-            // 
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -465,6 +453,7 @@
             // colorComboBox
             // 
             this.colorComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.colorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.colorComboBox.ItemHeight = 20;
             this.colorComboBox.Location = new System.Drawing.Point(185, 22);
             this.colorComboBox.Name = "colorComboBox";
@@ -491,6 +480,24 @@
             // 
             this.saveFileDialog.AddExtension = false;
             this.saveFileDialog.Filter = "Файлы електронных таблиц (*.xls)|*.xls";
+            // 
+            // key
+            // 
+            this.key.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.key.HeaderText = "Значение";
+            this.key.Name = "key";
+            // 
+            // prop1
+            // 
+            this.prop1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.prop1.HeaderText = "Свойство 1";
+            this.prop1.Name = "prop1";
+            // 
+            // prop2
+            // 
+            this.prop2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.prop2.HeaderText = "Свойство 2";
+            this.prop2.Name = "prop2";
             // 
             // Main
             // 
@@ -552,9 +559,6 @@
         public System.Windows.Forms.NumericUpDown pencilSize;
         private System.Windows.Forms.Button ClearAllNotes;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn key;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prop1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prop2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button addToGrid;
         private System.Windows.Forms.Label label5;
@@ -566,6 +570,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem количествоСтролбцовToolStripMenuItem;
         private System.Windows.Forms.CheckBox eraser;
+        private System.Windows.Forms.DataGridViewTextBoxColumn key;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prop1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prop2;
     }
 }
 

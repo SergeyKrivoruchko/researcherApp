@@ -18,6 +18,7 @@ namespace researcherApp
 {
     public partial class Main : Form
     {
+       
         public struct ValueProps
         {
 
@@ -38,7 +39,7 @@ namespace researcherApp
         bool isPainting = false, isPencilChecked=false, canDelete=true, isErasing=false, isEraseCheked=false;
         Bitmap forPainting;
         Point PaintFrom = new Point(0, 0);
-        String[] baseColors = {"Red", "Green", "Blue", "Yellow"};
+        string[] baseColors = {"Red", "Green", "Blue", "Yellow"};
         int gridHeight = 20, gridWidth = 70;
         public int gridRows, gridCols, currentPencilSize;
         public StringCollection sequences = new StringCollection();
@@ -249,16 +250,18 @@ namespace researcherApp
         {
             Graphics g = e.Graphics;
             Rectangle rect = e.Bounds;
-            if (e.Index >= 0)
-            {
+            if ( (e.State & DrawItemState.ComboBoxEdit) != DrawItemState.ComboBoxEdit)
+                 e.DrawBackground();
+            
                 string n = ((ComboBox)sender).Items[e.Index].ToString();
                 Font f = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
                 Color c = Color.FromName(n);
                 Brush b = new SolidBrush(c);
-                g.DrawString(n, f, Brushes.Black, rect.X, rect.Top+5);
-                g.FillRectangle(b, rect.X + 110, rect.Y + 5,
-                                rect.Width - 10, rect.Height - 10);
-            }
+                
+                    g.DrawString(n, f, Brushes.Black, rect.X, rect.Top + 5);
+                g.FillRectangle(b, rect.X + 70, rect.Y + 5, rect.Width - 10, rect.Height - 10);
+                
+            
         }
 
         private void pencil_CheckedChanged(object sender, EventArgs e)
