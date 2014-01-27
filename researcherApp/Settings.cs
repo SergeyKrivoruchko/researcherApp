@@ -84,7 +84,7 @@ namespace researcherApp
             
                 m.gridCols = Properties.Settings.Default.gridCols;
                 m.gridRows = Properties.Settings.Default.gridRows;
-                m.pictureBox1.Image = m.Drow_grid();
+                m.Drow_grid(m.grafx.Graphics);
             //}
             m.pencilSize.Value = Properties.Settings.Default.pencilSize;
             m.sequences = Properties.Settings.Default.Sequences;
@@ -101,6 +101,7 @@ namespace researcherApp
             pencilSize.Value = Properties.Settings.Default.pencilSize;
             //StringCollection str = new StringCollection();
             //str = Properties.Settings.Default.Sequences;
+            if (Properties.Settings.Default.Sequences!=null)
             sequencesList.Items.AddRange(Properties.Settings.Default.Sequences.Cast<string>().ToArray());
         }
 
