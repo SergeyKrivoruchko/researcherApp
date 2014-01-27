@@ -465,7 +465,6 @@
             this.pencil.TabIndex = 2;
             this.pencil.Text = "Карандаш";
             this.pencil.UseVisualStyleBackColor = true;
-            this.pencil.CheckedChanged += new System.EventHandler(this.pencil_CheckedChanged);
             this.pencil.Click += new System.EventHandler(this.pencil_Click);
             // 
             // colorComboBox

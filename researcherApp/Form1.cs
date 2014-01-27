@@ -37,7 +37,6 @@ namespace researcherApp
         public string FileName = "";
         TextBox dinamicTextBox;
         bool isPainting = false, isPencilChecked=false, canDelete=true, isErasing=false, isEraseCheked=false;
-        Bitmap forPainting;
         Point PaintFrom = new Point(0, 0);
         string[] baseColors = {"Red", "Green", "Blue", "Yellow"};
         int gridHeight = 20, gridWidth = 70;
@@ -60,10 +59,12 @@ namespace researcherApp
 
             context = BufferedGraphicsManager.Current;
             
-            panel1.Width = (gridCols+1) * gridWidth;
-            panel1.Height = (gridRows+2) * gridHeight;
+            panel1.Width = (gridCols+1) * gridWidth+1;
+            panel1.Height = (gridRows+2) * gridHeight+1;
             context.MaximumBuffer = new Size(panel1.Width + 1, panel1.Height + 1);
             grafx = context.Allocate(panel1.CreateGraphics(), new Rectangle(0, 0, panel1.Width + 1, panel1.Height + 1));
+            grafx.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            grafx.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
             ReadTables();
             Drow_grid(grafx.Graphics);
@@ -131,15 +132,7 @@ namespace researcherApp
                 comboBox1.Items.Add(item.Name);
             comboBox1.SelectedIndex = 0;
         }
-        private void initializeBitMap(int w, int h)
-        {
-            Graphics g;
-            forPainting = new Bitmap(w, h);
-            g = Graphics.FromImage(forPainting);
-            forPainting.MakeTransparent(Color.Coral);
-            g.Clear(Color.White);
-            g.Dispose();
-        }
+
 
         private void GetColors()
         {
@@ -161,15 +154,15 @@ namespace researcherApp
 
           
             g.Clear(Color.White);
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            for (int i = 0; i < panel1.Height; i++)
+            
+            for (int i = 0; i <= gridRows+2; i++)
                 g.DrawLine(Pens.LightGray, new Point(0, i * gridHeight), new Point(panel1.Width, i * gridHeight));
 
-            for (int i = 0; i < panel1.Width; i++)
+            for (int i = 0; i <= gridCols+1; i++)
                 g.DrawLine(Pens.LightGray, new Point(i * gridWidth, 0), new Point(i * gridWidth, panel1.Height));
 
             Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+           
 
 
 
@@ -211,7 +204,7 @@ namespace researcherApp
 
             
             Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            //g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             for (int i = 0; i < grid_values.Count; i++)
                 for (int j = i + 1; j < grid_values.Count; j++)
                     if (grid_values.ElementAt(i).Value.prop1 == grid_values.ElementAt(j).Value.prop2)
@@ -274,9 +267,19 @@ namespace researcherApp
             
         }
 
-        private void pencil_CheckedChanged(object sender, EventArgs e)
+
+
+        private void eraser_Click(object sender, EventArgs e)
         {
-            
+            pencil.Checked = isEraseCheked;
+            isPencilChecked = isEraseCheked;
+            isEraseCheked = !isEraseCheked;
+        }
+
+        private void pencil_Click(object sender, EventArgs e)
+        {
+            eraser.Checked = isPencilChecked;
+            isEraseCheked = isPencilChecked;
             isPencilChecked = !isPencilChecked;
         }
 
@@ -307,7 +310,7 @@ namespace researcherApp
             {
                 Graphics g;
                 g = grafx.Graphics;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 Pen p = new Pen(Color.FromName(colorComboBox.Text), Convert.ToInt32(pencilSize.Value));
                 g.DrawLine(p, PaintFrom, new Point(e.X, e.Y));
                 panel1.Invalidate(new Rectangle(Math.Min(e.X, PaintFrom.X) - 10, Math.Min(e.Y, PaintFrom.Y) - 10, Math.Abs(e.X - PaintFrom.X) + 20, Math.Abs(e.Y - PaintFrom.Y) + 20));
@@ -320,23 +323,25 @@ namespace researcherApp
 
             if (isErasing)
             {
+                
+                int leftBorder = e.X / gridWidth;
+                int bottomBorder = e.Y / gridHeight;
 
                 Bitmap b = new Bitmap(gridWidth * 2, gridHeight * 2, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                 Graphics g = Graphics.FromImage(b);
                 g.Clear(Color.White);
-                int leftBorder = e.X / gridWidth;
-                int bottomBorder = e.Y / gridHeight;
-
-
                 
+
+
+               
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 for (int i = 0; i < 3; i++)
                     g.DrawLine(Pens.LightGray, new Point(0, i * gridHeight), new Point(b.Width, i * gridHeight));
 
                 for (int i = 0; i < 3; i++)
                     g.DrawLine(Pens.LightGray, new Point(i * gridWidth, 0), new Point(i * gridWidth, b.Height));
-                
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
                 Font f = new Font("Arial", gridHeight-6, GraphicsUnit.Pixel);
                
 
@@ -394,7 +399,7 @@ namespace researcherApp
                g1.SetClip(clipPath);
 
                g1.DrawImage(b, e.X - 5, e.Y - 5, new Rectangle(e.X-leftBorder*gridWidth - 5, e.Y -bottomBorder*gridHeight- 5, 10, 10), GraphicsUnit.Pixel);
-              
+               g1.ResetClip();
                panel1.Invalidate(new Rectangle(e.X - 5, e.Y - 5, 10, 10));
                 
             
@@ -597,19 +602,7 @@ namespace researcherApp
  
 
 
-        private void eraser_Click(object sender, EventArgs e)
-        {
-            pencil.Checked = false;
-            isEraseCheked = true;
-            isPencilChecked = false;
-        }
-
-        private void pencil_Click(object sender, EventArgs e)
-        {
-            eraser.Checked = false;
-            isEraseCheked = false;
-            isPencilChecked = true; ;
-        }
+       
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
