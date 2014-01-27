@@ -54,7 +54,7 @@ namespace researcherApp
             pencilSize.Value = Properties.Settings.Default.pencilSize;
             sequences = Properties.Settings.Default.Sequences;
             if (sequences == null) sequences = new StringCollection();
-            
+           
             
 
             context = BufferedGraphicsManager.Current;
@@ -67,7 +67,7 @@ namespace researcherApp
             grafx.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
             ReadTables();
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
             DataGridFill();
             GetColors();
            
@@ -77,9 +77,9 @@ namespace researcherApp
         private void highliteSequence(Graphics g)
 
         {
-            
-           
 
+
+            if (sequences.Count == 0) return;
             for (int i = 0; i < grid_values.Count - 1; i++)
             {
                 StringBuilder str = new StringBuilder(new string('A', gridRows));
@@ -143,17 +143,16 @@ namespace researcherApp
             colorComboBox.SelectedIndex = 0;
         }
 
-        public void Drow_grid(Graphics g)
+
+        public void Draw_grid(Graphics g)
         {
-            
-           
+              
 
 
              if (grid_values.Count>gridCols)
-             gridCols = grid_values.Count;
+                 gridCols = grid_values.Count;
 
-          
-            g.Clear(Color.White);
+             g.Clear(Color.White);
             
             for (int i = 0; i <= gridRows+2; i++)
                 g.DrawLine(Pens.LightGray, new Point(0, i * gridHeight), new Point(panel1.Width, i * gridHeight));
@@ -163,10 +162,6 @@ namespace researcherApp
 
             Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
            
-
-
-
-
 
             for (int i = 1; i <= grid_values.Count; i++)
             {
@@ -186,7 +181,6 @@ namespace researcherApp
             f = new Font("Arial", gridHeight - 9, GraphicsUnit.Pixel);
             for (int i=1; i<=gridRows; i++)
                 g.DrawString(i.ToString(), f, Brushes.DarkSlateGray, Cell_Position(i.ToString(), f, 0, i+1));
-           
             g.DrawString("Значения", f, Brushes.Black, Cell_Position("Значения", f, 0,0));
             g.DrawString("Свойство 1", f, Brushes.Black, Cell_Position("Значения", f, 0, 1));
             
@@ -197,24 +191,16 @@ namespace researcherApp
         }
 
         private void Find_Similar(Graphics g)
-        {
-            
-            
-          
-
-            
+        {            
             Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
-            //g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             for (int i = 0; i < grid_values.Count; i++)
                 for (int j = i + 1; j < grid_values.Count; j++)
                     if (grid_values.ElementAt(i).Value.prop1 == grid_values.ElementAt(j).Value.prop2)
                     {
-                        // if ((gridWidth * (j) +gridWidth <=pictureBox1.Image.Width) && ( gridHeight * (j - i + 1)  +gridHeight <=pictureBox1.Image.Height ))
                         g.FillRectangle(Brushes.Yellow, new Rectangle(gridWidth * (j + 1) + 1, gridHeight * (j - i + 1) + 1, gridWidth - 1, gridHeight - 1));
                         g.DrawString(grid_values.ElementAt(j).Value.prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(j).Value.prop2.ToString(), f, j + 1, j - i + 1));
                     }
-           
-            
+
         }
 
         private PointF Cell_Position(string s, Font f, int posX, int posY)
@@ -261,7 +247,7 @@ namespace researcherApp
                 Color c = Color.FromName(n);
                 Brush b = new SolidBrush(c);
                 
-                    g.DrawString(n, f, Brushes.Black, rect.X, rect.Top + 5);
+                g.DrawString(n, f, Brushes.Black, rect.X, rect.Top + 5);
                 g.FillRectangle(b, rect.X + 70, rect.Y + 5, rect.Width - 10, rect.Height - 10);
                 
             
@@ -310,7 +296,6 @@ namespace researcherApp
             {
                 Graphics g;
                 g = grafx.Graphics;
-                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 Pen p = new Pen(Color.FromName(colorComboBox.Text), Convert.ToInt32(pencilSize.Value));
                 g.DrawLine(p, PaintFrom, new Point(e.X, e.Y));
                 panel1.Invalidate(new Rectangle(Math.Min(e.X, PaintFrom.X) - 10, Math.Min(e.Y, PaintFrom.Y) - 10, Math.Abs(e.X - PaintFrom.X) + 20, Math.Abs(e.Y - PaintFrom.Y) + 20));
@@ -365,11 +350,11 @@ namespace researcherApp
                     }
 
                 if (leftBorder - 1 < grid_values.Count)
-                for (int i = 0; i <2; i++)
+                for (int i = -1; i <2; i++)
                 {
                     StringBuilder str = new StringBuilder(new string('A', gridRows));
                     for (int j = 0; j < Math.Min(leftBorder-2, gridRows); j++)
-                        if (grid_values.ElementAt(leftBorder - i-1).Value.prop2 == grid_values.ElementAt((leftBorder - i-1) - (j + 1)).Value.prop1)
+                        if (grid_values.ElementAt(leftBorder + i-1).Value.prop2 == grid_values.ElementAt((leftBorder +i-1) - (j + 1)).Value.prop1)
                             str[j] = 'B';
                     for (int j = 0; j < sequences.Count; j++)
                     {
@@ -378,14 +363,14 @@ namespace researcherApp
                         string sentence = str.ToString();
                         foreach (Match match in rgx.Matches(sentence))
                         {
-                            if ((match.Index<=bottomBorder-2)&&(match.Index+sequences[j].Length>=bottomBorder-1))
+                            //if ((match.Index>=bottomBorder-2)||(match.Index+sequences[j].Length<=bottomBorder-1))
                             g.DrawRectangle(new Pen(Color.Red, 2), gridWidth * i, (match.Index-(bottomBorder-2))*gridHeight, gridWidth, gridHeight * sequences[j].Length);
                         } 
                     }
 
                 }
 
-                
+                pictureBox1.Image = b;
                 
                 GraphicsPath clipPath = new GraphicsPath();
                 
@@ -417,7 +402,7 @@ namespace researcherApp
 
         private void ClearAllNotes_Click(object sender, EventArgs e)
         {
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
             panel1.Invalidate();
         }
 
@@ -425,7 +410,7 @@ namespace researcherApp
         {
             gridHeight -= 5;
             gridWidth -= 5;
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
             panel1.Invalidate();
         }
 
@@ -433,7 +418,7 @@ namespace researcherApp
         {
             gridHeight += 5;
             gridWidth += 5;
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
             panel1.Invalidate();
         }
 
@@ -442,7 +427,7 @@ namespace researcherApp
            
             grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
             grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value)));
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
             panel1.Invalidate();
         }
 
@@ -466,7 +451,7 @@ namespace researcherApp
                 }
                
             }
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
             panel1.Invalidate();
             DataGridFill();
         }
@@ -481,7 +466,7 @@ namespace researcherApp
                 grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text), Convert.ToInt32(addProp2.Text)));
 
                 dataGridView1.Rows.Add(Convert.ToInt32(addKey.Text), grid_values[Convert.ToInt32(addKey.Text)].prop1, grid_values[Convert.ToInt32(addKey.Text)].prop2);
-                Drow_grid(grafx.Graphics);
+                Draw_grid(grafx.Graphics);
                 panel1.Invalidate();
             }
         }
@@ -492,7 +477,7 @@ namespace researcherApp
             {
                 grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
                 
-                Drow_grid(grafx.Graphics);
+                Draw_grid(grafx.Graphics);
             }
         }
 
@@ -582,7 +567,8 @@ namespace researcherApp
             splitContainer2.Panel2.Focus();
             panel1.Controls.Remove(dinamicTextBox);
             dinamicTextBox.Dispose();
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
+            panel1.Invalidate();
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
@@ -595,7 +581,8 @@ namespace researcherApp
             canDelete = false;
             grid_values.Clear();
             dataGridView1.Rows.Clear();
-            Drow_grid(grafx.Graphics);
+            Draw_grid(grafx.Graphics);
+            panel1.Invalidate();
             canDelete = true;
         }
 

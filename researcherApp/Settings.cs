@@ -84,7 +84,7 @@ namespace researcherApp
             
                 m.gridCols = Properties.Settings.Default.gridCols;
                 m.gridRows = Properties.Settings.Default.gridRows;
-                m.Drow_grid(m.grafx.Graphics);
+                m.Draw_grid(m.grafx.Graphics);
             //}
             m.pencilSize.Value = Properties.Settings.Default.pencilSize;
             m.sequences = Properties.Settings.Default.Sequences;
