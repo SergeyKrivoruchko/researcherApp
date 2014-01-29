@@ -67,7 +67,6 @@
             this.colorComboBox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -80,7 +79,6 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pencilSize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -224,7 +222,6 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.pictureBox1);
             this.groupBox1.Controls.Add(this.addToGrid);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
@@ -432,7 +429,7 @@
             // 
             this.pencilSize.Location = new System.Drawing.Point(380, 23);
             this.pencilSize.Maximum = new decimal(new int[] {
-            5,
+            20,
             0,
             0,
             0});
@@ -468,6 +465,7 @@
             this.pencil.TabIndex = 2;
             this.pencil.Text = "Карандаш";
             this.pencil.UseVisualStyleBackColor = true;
+            this.pencil.CheckedChanged += new System.EventHandler(this.pencil_CheckedChanged);
             this.pencil.Click += new System.EventHandler(this.pencil_Click);
             // 
             // colorComboBox
@@ -499,14 +497,6 @@
             this.saveFileDialog.AddExtension = false;
             this.saveFileDialog.Filter = "Файлы електронных таблиц (*.xls)|*.xls";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(21, 17);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(195, 111);
-            this.pictureBox1.TabIndex = 19;
-            this.pictureBox1.TabStop = false;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -533,7 +523,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pencilSize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -580,7 +569,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prop1;
         private System.Windows.Forms.DataGridViewTextBoxColumn prop2;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

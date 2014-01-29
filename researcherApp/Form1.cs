@@ -38,12 +38,13 @@ namespace researcherApp
         TextBox dinamicTextBox;
         bool isPainting = false, isPencilChecked=false, canDelete=true, isErasing=false, isEraseCheked=false;
         Point PaintFrom = new Point(0, 0);
-        string[] baseColors = {"Red", "Green", "Blue", "Yellow"};
+        string[] baseColors = { "Red", "Green", "Blue", "Yellow", "Orange", "BlueViolet" };
         int gridHeight = 20, gridWidth = 70;
         public int gridRows, gridCols, currentPencilSize;
         public StringCollection sequences = new StringCollection();
         private BufferedGraphicsContext context;
         public BufferedGraphics grafx;
+        int eraserSize = 10;
 
         
         public Main()
@@ -257,20 +258,21 @@ namespace researcherApp
 
         private void eraser_Click(object sender, EventArgs e)
         {
-            pencil.Checked = isEraseCheked;
-            isPencilChecked = isEraseCheked;
+            pencil.Checked = false;
+            isPencilChecked = false;
             isEraseCheked = !isEraseCheked;
         }
 
         private void pencil_Click(object sender, EventArgs e)
         {
-            eraser.Checked = isPencilChecked;
-            isEraseCheked = isPencilChecked;
+            eraser.Checked = false ;
+            isEraseCheked = false;
             isPencilChecked = !isPencilChecked;
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.X <= gridWidth) return;
             
             if (isPencilChecked)
             {
@@ -285,8 +287,7 @@ namespace researcherApp
                 isPainting = false;
 
             }
-            PaintFrom.X = e.X;
-            PaintFrom.Y = e.Y;
+            PaintFrom = e.Location;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -297,11 +298,10 @@ namespace researcherApp
                 Graphics g;
                 g = grafx.Graphics;
                 Pen p = new Pen(Color.FromName(colorComboBox.Text), Convert.ToInt32(pencilSize.Value));
-                g.DrawLine(p, PaintFrom, new Point(e.X, e.Y));
+                g.DrawLine(p, PaintFrom, e.Location);
                 panel1.Invalidate(new Rectangle(Math.Min(e.X, PaintFrom.X) - 10, Math.Min(e.Y, PaintFrom.Y) - 10, Math.Abs(e.X - PaintFrom.X) + 20, Math.Abs(e.Y - PaintFrom.Y) + 20));
-                PaintFrom.X = e.X;
-                PaintFrom.Y = e.Y;
-                
+                PaintFrom = e.Location;
+              
                 
             
             }
@@ -363,29 +363,29 @@ namespace researcherApp
                         string sentence = str.ToString();
                         foreach (Match match in rgx.Matches(sentence))
                         {
-                            //if ((match.Index>=bottomBorder-2)||(match.Index+sequences[j].Length<=bottomBorder-1))
+                           
                             g.DrawRectangle(new Pen(Color.Red, 2), gridWidth * i, (match.Index-(bottomBorder-2))*gridHeight, gridWidth, gridHeight * sequences[j].Length);
                         } 
                     }
 
                 }
 
-                pictureBox1.Image = b;
+                
                 
                 GraphicsPath clipPath = new GraphicsPath();
                 
                 
                 
-                clipPath.AddEllipse(e.X-5, e.Y-5, 10, 10);
+                clipPath.AddEllipse(e.X-eraserSize/2, e.Y-eraserSize/2, eraserSize, eraserSize);
                
                 
                 
                Graphics g1 = grafx.Graphics;
                g1.SetClip(clipPath);
 
-               g1.DrawImage(b, e.X - 5, e.Y - 5, new Rectangle(e.X-leftBorder*gridWidth - 5, e.Y -bottomBorder*gridHeight- 5, 10, 10), GraphicsUnit.Pixel);
+               g1.DrawImage(b, e.X-eraserSize / 2, e.Y-eraserSize / 2, new Rectangle(e.X - leftBorder * gridWidth - eraserSize / 2, e.Y - bottomBorder * gridHeight - eraserSize / 2, eraserSize, eraserSize ), GraphicsUnit.Pixel);
                g1.ResetClip();
-               panel1.Invalidate(new Rectangle(e.X - 5, e.Y - 5, 10, 10));
+               panel1.Invalidate(new Rectangle(e.X - eraserSize / 2, e.Y - eraserSize / 2, eraserSize, eraserSize ));
                 
             
 
@@ -667,6 +667,11 @@ namespace researcherApp
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             grafx.Render(e.Graphics);
+        }
+
+        private void pencil_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
     }
