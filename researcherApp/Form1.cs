@@ -47,6 +47,7 @@ namespace researcherApp
         public BufferedGraphics grafx;
         int eraserSize = 10;
         bool isNewRow = false;
+        int OldValue = 0; int newRowPos = 0;
 
         
         public Main()
@@ -421,7 +422,7 @@ namespace researcherApp
         private void ClearAllNotes_Click(object sender, EventArgs e)
         {
             Draw_grid(grafx.Graphics);
-            panel1.Invalidate();
+            //panel1.Invalidate();
         }
 
         private void уменшитьРазмерЯчеекToolStripMenuItem_Click(object sender, EventArgs e)
@@ -429,7 +430,7 @@ namespace researcherApp
             gridHeight -= 5;
             gridWidth -= 5;
             Draw_grid(grafx.Graphics);
-            panel1.Invalidate();
+            //panel1.Invalidate();
         }
 
         private void увеличитьРазмерЯчеекToolStripMenuItem_Click(object sender, EventArgs e)
@@ -437,23 +438,37 @@ namespace researcherApp
             gridHeight += 5;
             gridWidth += 5;
             Draw_grid(grafx.Graphics);
-            panel1.Invalidate();
+            //panel1.Invalidate();
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if ((isNewRow == true) && (canDelete == true) && (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null))
+            if (((isNewRow == true)&&(newRowPos==e.RowIndex)) && (canDelete == true) && (dataGridView1.Rows[e.RowIndex].Cells[0].Value != null))
             {
                 dataGridView1.Rows[e.RowIndex].Cells[1].Value = 0;
                 dataGridView1.Rows[e.RowIndex].Cells[2].Value = 0;
                 isNewRow = false;
             }
-            else return;
+            //else return;
 
-           if (e.RowIndex<grid_values.Count)
-            grid_values.Remove(grid_values.ElementAt(e.RowIndex).Key);
-            grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value)));
+            if (e.RowIndex < grid_values.Count)
+           
+                if (e.ColumnIndex == 0)
+                {
+                    grid_values.Remove(OldValue);
+                    grid_values.Add(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value), new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value)));
+                    if (table_values.Contains(OldValue))
+                        for (int i = 0; i < table_values.Count; i++) 
+                            if (table_values[i]==OldValue) table_values[i]=Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value);
 
+                }
+            
+            else
+                grid_values[Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value)] = new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value));
+            else
+                grid_values[Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value)] = new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value));
+
+            Draw_grid(grafx.Graphics);
 
             
          
@@ -558,7 +573,7 @@ namespace researcherApp
                 splitContainer2.Panel2.Focus();
                 dinamicTextBox.Dispose();
                 Draw_grid(grafx.Graphics);
-                panel1.Invalidate();
+                //panel1.Invalidate();
             }
                 
                 
@@ -617,7 +632,7 @@ namespace researcherApp
             panel1.Controls.Remove(dinamicTextBox);
             dinamicTextBox.Dispose();
             Draw_grid(grafx.Graphics);
-            panel1.Invalidate();
+            //panel1.Invalidate();
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
@@ -628,10 +643,10 @@ namespace researcherApp
         private void очиститьТаблицуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             canDelete = false;
-            grid_values.Clear();
-            dataGridView1.Rows.Clear();
+            table_values.Clear();
+          
             Draw_grid(grafx.Graphics);
-            panel1.Invalidate();
+
             canDelete = true;
         }
 
@@ -702,7 +717,7 @@ namespace researcherApp
                         ObjExcel.Cells[j+2,i+2] = grid_values.ElementAt(i).Value.prop2;
                         
                 }
-                ObjWorkBook.SaveAs(saveFileDialog.FileName+".xlsx");
+                ObjWorkBook.SaveAs(saveFileDialog.FileName);
                 ObjWorkBook.Close();
                 ObjExcel.Quit();
                 ObjWorkBook = null;
@@ -726,14 +741,49 @@ namespace researcherApp
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridView1.Rows[e.RowIndex].IsNewRow == true) isNewRow = true;
+            if (dataGridView1.Rows[e.RowIndex].IsNewRow == true)
+            {
+                isNewRow = true;
+                newRowPos = e.RowIndex;
+            }
         
         }
 
-        private void dataGridView1_RowLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            
 
+        private void количествоСтролбцовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputBox f = new InputBox("Количество столбцов", "Введите количество столбцов", gridCols.ToString());
+            f.ShowDialog(this);
+            gridCols = f.value;
+            Properties.Settings.Default.gridCols = gridCols;
+            reSizeDrawBuffer();
+            Draw_grid(grafx.Graphics);
+        }
+
+        private void количествоСтрокToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputBox f = new InputBox("Количество строк", "Введите количество строк", gridRows.ToString());
+            f.ShowDialog(this);
+            gridRows = f.value;
+            Properties.Settings.Default.gridRows = gridRows;
+            reSizeDrawBuffer();
+            Draw_grid(grafx.Graphics);
+        }
+
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!dataGridView1.Rows[e.RowIndex].IsNewRow)
+            OldValue = Convert.ToInt32(dataGridView1[e.ColumnIndex,e.RowIndex].Value);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            grid_values.Clear();
+            canDelete = false;
+            int count = dataGridView1.Rows.Count;
+            for (int i = 0; i < count - 1; i++)
+                dataGridView1.Rows.RemoveAt(0);
+            canDelete = true;
         }
     }
 }

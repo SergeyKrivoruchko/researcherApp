@@ -67,6 +67,7 @@
             this.colorComboBox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.button2 = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -155,12 +156,14 @@
             this.количествоСтролбцовToolStripMenuItem.Name = "количествоСтролбцовToolStripMenuItem";
             this.количествоСтролбцовToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.количествоСтролбцовToolStripMenuItem.Text = "Количество стролбцов";
+            this.количествоСтролбцовToolStripMenuItem.Click += new System.EventHandler(this.количествоСтролбцовToolStripMenuItem_Click);
             // 
             // количествоСтрокToolStripMenuItem
             // 
             this.количествоСтрокToolStripMenuItem.Name = "количествоСтрокToolStripMenuItem";
             this.количествоСтрокToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.количествоСтрокToolStripMenuItem.Text = "Количество строк";
+            this.количествоСтрокToolStripMenuItem.Click += new System.EventHandler(this.количествоСтрокToolStripMenuItem_Click);
             // 
             // показатьВерхнююПанельToolStripMenuItem
             // 
@@ -206,6 +209,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel1.Controls.Add(this.dataGridView1);
             this.splitContainer1.Panel1.Controls.Add(this.button1);
@@ -229,7 +233,7 @@
             this.groupBox1.Controls.Add(this.addProp2);
             this.groupBox1.Controls.Add(this.addProp1);
             this.groupBox1.Controls.Add(this.addKey);
-            this.groupBox1.Location = new System.Drawing.Point(3, 50);
+            this.groupBox1.Location = new System.Drawing.Point(3, 35);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(233, 163);
             this.groupBox1.TabIndex = 12;
@@ -314,17 +318,17 @@
             this.key,
             this.prop1,
             this.prop2});
-            this.dataGridView1.Location = new System.Drawing.Point(8, 219);
+            this.dataGridView1.Location = new System.Drawing.Point(8, 201);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(219, 276);
+            this.dataGridView1.Size = new System.Drawing.Size(219, 269);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
+            this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            this.dataGridView1.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowLeave);
             this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
             // 
             // key
@@ -348,7 +352,7 @@
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button1.Location = new System.Drawing.Point(40, 501);
+            this.button1.Location = new System.Drawing.Point(40, 505);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(158, 23);
             this.button1.TabIndex = 2;
@@ -361,7 +365,7 @@
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(13, 23);
+            this.comboBox1.Location = new System.Drawing.Point(13, 15);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(212, 21);
             this.comboBox1.TabIndex = 3;
@@ -397,6 +401,7 @@
             // 
             // eraser
             // 
+            this.eraser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eraser.Appearance = System.Windows.Forms.Appearance.Button;
             this.eraser.Location = new System.Drawing.Point(501, 20);
             this.eraser.Name = "eraser";
@@ -409,6 +414,7 @@
             // 
             // ClearAllNotes
             // 
+            this.ClearAllNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ClearAllNotes.Location = new System.Drawing.Point(574, 20);
             this.ClearAllNotes.Name = "ClearAllNotes";
             this.ClearAllNotes.Size = new System.Drawing.Size(132, 24);
@@ -419,6 +425,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(361, 8);
             this.label2.Name = "label2";
@@ -428,6 +435,7 @@
             // 
             // pencilSize
             // 
+            this.pencilSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pencilSize.Location = new System.Drawing.Point(380, 23);
             this.pencilSize.Maximum = new decimal(new int[] {
             20,
@@ -450,6 +458,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(214, 6);
             this.label1.Name = "label1";
@@ -459,6 +468,7 @@
             // 
             // pencil
             // 
+            this.pencil.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pencil.Appearance = System.Windows.Forms.Appearance.Button;
             this.pencil.Location = new System.Drawing.Point(712, 20);
             this.pencil.Name = "pencil";
@@ -471,6 +481,7 @@
             // 
             // colorComboBox
             // 
+            this.colorComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.colorComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.colorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.colorComboBox.ItemHeight = 20;
@@ -497,6 +508,17 @@
             // 
             this.saveFileDialog.AddExtension = false;
             this.saveFileDialog.Filter = "Файлы електронных таблиц (*.xls)|*.xls";
+            // 
+            // button2
+            // 
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button2.Location = new System.Drawing.Point(40, 476);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(158, 23);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "Очистить текущий список";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Main
             // 
@@ -570,6 +592,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prop1;
         private System.Windows.Forms.DataGridViewTextBoxColumn prop2;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
