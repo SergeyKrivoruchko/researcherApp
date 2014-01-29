@@ -81,7 +81,7 @@ namespace researcherApp
 
 
             if (sequences.Count == 0) return;
-            for (int i = 0; i < grid_values.Count - 1; i++)
+            for (int i = 0; i < grid_values.Count ; i++)
             {
                 StringBuilder str = new StringBuilder(new string('A', gridRows));
                 for (int j = 0; j < Math.Min(i, gridRows); j++)
@@ -349,11 +349,12 @@ namespace researcherApp
                                 g.DrawString(grid_values.ElementAt(leftBorder - 1).Value.prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values.ElementAt(leftBorder - 1).Value.prop2.ToString(), f, i, 0));
                     }
 
-                if (leftBorder - 1 < grid_values.Count)
+                if (leftBorder-2< grid_values.Count)
                 for (int i = -1; i <2; i++)
                 {
                     StringBuilder str = new StringBuilder(new string('A', gridRows));
-                    for (int j = 0; j < Math.Min(leftBorder-2, gridRows); j++)
+                    for (int j = 0; j < Math.Min(leftBorder-2+i+1, gridRows); j++)
+                        if (leftBorder+i<=grid_values.Count)
                         if (grid_values.ElementAt(leftBorder + i-1).Value.prop2 == grid_values.ElementAt((leftBorder +i-1) - (j + 1)).Value.prop1)
                             str[j] = 'B';
                     for (int j = 0; j < sequences.Count; j++)
@@ -370,7 +371,7 @@ namespace researcherApp
 
                 }
 
-                
+                pictureBox1.Image = b;
                 
                 GraphicsPath clipPath = new GraphicsPath();
                 
