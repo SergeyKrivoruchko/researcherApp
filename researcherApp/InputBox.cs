@@ -22,18 +22,25 @@ namespace researcherApp
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text == "") return;
+            this.DialogResult = DialogResult.OK;
             value =Convert.ToInt32(textBox1.Text);
             this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        private void InputBox_Load(object sender, EventArgs e)
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+            if ((Char.IsDigit(e.KeyChar)) || (e.KeyChar == Convert.ToChar(Keys.Back))) return;
+            else
+                e.Handled = true;
         }
+
+
     }
 }

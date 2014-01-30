@@ -469,6 +469,7 @@ namespace researcherApp
             else
                 grid_values[Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value)] = new ValueProps(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[1].Value), Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[2].Value));
 
+            addToAutoComlete();
             Draw_grid(grafx.Graphics);
 
             
@@ -496,7 +497,7 @@ namespace researcherApp
                 }
                
             }
-
+            addToAutoComlete();
             DataGridFill();
         }
 
@@ -508,7 +509,7 @@ namespace researcherApp
             else
             {
                 grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text), Convert.ToInt32(addProp2.Text)));
-
+                addToAutoComlete();
                 dataGridView1.Rows.Add(Convert.ToInt32(addKey.Text), grid_values[Convert.ToInt32(addKey.Text)].prop1, grid_values[Convert.ToInt32(addKey.Text)].prop2);
             }
         }
@@ -556,9 +557,13 @@ namespace researcherApp
 
         private void keyPressTextBox(object sender, KeyPressEventArgs e)
         {
-            if (dinamicTextBox.Text == "") return;
+            
+
+            
             if (e.KeyChar == Convert.ToChar(Keys.Return))
             {
+                if (dinamicTextBox.Text == "") return;
+                
                 int newVal = Convert.ToInt32(dinamicTextBox.Text);
                 int col = dinamicTextBox.Location.X / gridWidth;
                 int row = dinamicTextBox.Location.Y / gridHeight;
@@ -569,13 +574,18 @@ namespace researcherApp
                         table_values[col - 1] = newVal;
 
                 dinamicTextBox.Leave -= new EventHandler(deleteTextBox);
+                splitContainer2.Panel2.Focus();
                 panel1.Controls.Remove(dinamicTextBox);
                 
-                splitContainer2.Panel2.Focus();
+                
                 dinamicTextBox.Dispose();
                 Draw_grid(grafx.Graphics);
-                //panel1.Invalidate();
+                
             }
+            else
+                if ((Char.IsDigit(e.KeyChar)) || (e.KeyChar == Convert.ToChar(Keys.Back))) return;
+                else
+                    e.Handled = true;
                 
                 
         }
@@ -708,14 +718,14 @@ namespace researcherApp
                 ObjExcel.Cells[2, 1] = "Свойство1";
                 for (int i = 1; i <= gridRows; i++)
                     ObjExcel.Cells[i+2, 1]=i;
-                for (int i=0; i<grid_values.Count; i++)
+                for (int i=0; i<table_values.Count; i++)
                 {
-                    
-                    ObjExcel.Cells[1,i+2]=grid_values.ElementAt(i).Key;
-                    ObjExcel.Cells[2,i+2]=grid_values.ElementAt(i).Value.prop1;
+
+                    ObjExcel.Cells[1, i + 2] = table_values[i];
+                    ObjExcel.Cells[2, i + 2] = grid_values[table_values[i]].prop1;
                     for (int j=1; j<=gridRows; j++)
-                       
-                        ObjExcel.Cells[j+2,i+2] = grid_values.ElementAt(i).Value.prop2;
+
+                        ObjExcel.Cells[j + 2, i + 2] = grid_values[table_values[i]].prop2;
                         
                 }
                 ObjWorkBook.SaveAs(saveFileDialog.FileName);
@@ -755,20 +765,26 @@ namespace researcherApp
         {
             InputBox f = new InputBox("Количество столбцов", "Введите количество столбцов", gridCols.ToString());
             f.ShowDialog(this);
-            gridCols = f.value;
-            Properties.Settings.Default.gridCols = gridCols;
-            reSizeDrawBuffer();
-            Draw_grid(grafx.Graphics);
+            if (f.DialogResult == DialogResult.OK)
+            {
+                gridCols = f.value;
+                Properties.Settings.Default.gridCols = gridCols;
+                reSizeDrawBuffer();
+                Draw_grid(grafx.Graphics);
+            }
         }
 
         private void количествоСтрокToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InputBox f = new InputBox("Количество строк", "Введите количество строк", gridRows.ToString());
             f.ShowDialog(this);
-            gridRows = f.value;
-            Properties.Settings.Default.gridRows = gridRows;
-            reSizeDrawBuffer();
-            Draw_grid(grafx.Graphics);
+            if (f.DialogResult == DialogResult.OK)
+            {
+                gridRows = f.value;
+                Properties.Settings.Default.gridRows = gridRows;
+                reSizeDrawBuffer();
+                Draw_grid(grafx.Graphics);
+            }
         }
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -785,6 +801,39 @@ namespace researcherApp
             for (int i = 0; i < count - 1; i++)
                 dataGridView1.Rows.RemoveAt(0);
             canDelete = true;
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((Char.IsDigit(e.KeyChar))||(e.KeyChar==Convert.ToChar(Keys.Back))) return;
+            else
+                e.Handled=true;
+        }
+
+        private void addToAutoComlete()
+        {
+            AutoCompleteStringCollection autocomp = new AutoCompleteStringCollection();
+            autocomp.AddRange(grid_values.Select(x => x.Key.ToString()).ToArray());
+            textBox1.AutoCompleteCustomSource = autocomp;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text == "") return;
+            if (grid_values.ContainsKey(Convert.ToInt32(textBox1.Text)))
+            {
+                if (table_values.Count == gridCols)
+                {
+                    MessageBox.Show("Вся таблица уже заполнена значениями!", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+
+                }
+                table_values.Add(Convert.ToInt32(textBox1.Text));
+                textBox1.Clear();
+                Draw_grid(grafx.Graphics);
+            }
+            else
+                toolTip1.Show("Вводимое число должно быть с таблицы значений", textBox1, textBox1.Location.X-35 , textBox1.Location.Y-65, 3000);
         }
     }
 }
