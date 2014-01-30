@@ -43,6 +43,7 @@
             this.уменшитьРазмерЯчеекToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.увеличитьРазмерЯчеекToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.addToGrid = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -67,7 +68,6 @@
             this.colorComboBox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.button2 = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -221,6 +221,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(1034, 536);
             this.splitContainer1.SplitterDistance = 239;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // button2
+            // 
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button2.Location = new System.Drawing.Point(40, 476);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(158, 23);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "Очистить текущий список";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // groupBox1
             // 
@@ -508,17 +519,6 @@
             // 
             this.saveFileDialog.AddExtension = false;
             this.saveFileDialog.Filter = "Файлы електронных таблиц (*.xls)|*.xls";
-            // 
-            // button2
-            // 
-            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button2.Location = new System.Drawing.Point(40, 476);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(158, 23);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "Очистить текущий список";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Main
             // 

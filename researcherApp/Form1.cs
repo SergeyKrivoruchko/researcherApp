@@ -93,11 +93,11 @@ namespace researcherApp
 
 
             if (sequences.Count == 0) return;
-            for (int i = 0; i < table_values.Count ; i++)
+            for (int i = 0; i < gridRows ; i++)
             {
-                StringBuilder str = new StringBuilder(new string('A', gridRows));
-                for (int j = 0; j < Math.Min(i, gridRows); j++)
-                    if (grid_values[table_values[i]].prop2 == grid_values[table_values[i-(j+1)]].prop1)
+                StringBuilder str = new StringBuilder(new string('A', table_values.Count));
+                for (int j = i+1; j < table_values.Count; j++)
+                    if (grid_values[table_values[j]].prop2 == grid_values[table_values[j-i-1]].prop1)
                         str[j] = 'B';
                 for (int j = 0; j < sequences.Count; j++)
                 {
@@ -106,7 +106,7 @@ namespace researcherApp
                     string sentence = str.ToString();
                     foreach (Match match in rgx.Matches(sentence))
                     {
-                        g.DrawRectangle(new Pen(Color.Red, 2), gridWidth * (i+1), gridHeight * (match.Index+2), gridWidth, gridHeight * sequences[j].Length);
+                        g.DrawRectangle(new Pen(Color.Red, 2), gridWidth* (match.Index+1), gridHeight * (i+2) , gridWidth * sequences[j].Length, gridHeight);
                     }
                 }
                 
@@ -367,13 +367,14 @@ namespace researcherApp
                             g.DrawString(grid_values[table_values[leftBorder - 1]].prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values[table_values[leftBorder - 1]].prop2.ToString(), f, i, 0));
                     }
 
-                if (leftBorder-2< table_values.Count)
-                for (int i = -1; i <2; i++)
+                if (bottomBorder-2< table_values.Count)
+                    for (int i = bottomBorder - 3; i < bottomBorder+1; i++)
                 {
-                    StringBuilder str = new StringBuilder(new string('A', gridRows));
-                    for (int j = 0; j < Math.Min(leftBorder-2+i+1, gridRows); j++)
-                        if (leftBorder+i<=table_values.Count)
-                        if (grid_values[table_values[leftBorder + i-1]].prop2 == grid_values[table_values[(leftBorder +i-1) - (j + 1)]].prop1)
+                    StringBuilder str = new StringBuilder(new string('A', table_values.Count));
+                    
+                    for (int j = i+1; j < table_values.Count; j++)
+                        if ((bottomBorder + i > 0) && (bottomBorder + i - 1<table_values.Count))
+                        if (grid_values[table_values[j]].prop2 == grid_values[table_values[j-i-1]].prop1)
                             str[j] = 'B';
                     for (int j = 0; j < sequences.Count; j++)
                     {
@@ -383,14 +384,14 @@ namespace researcherApp
                         foreach (Match match in rgx.Matches(sentence))
                         {
                            
-                            g.DrawRectangle(new Pen(Color.Red, 2), gridWidth * i, (match.Index-(bottomBorder-2))*gridHeight, gridWidth, gridHeight * sequences[j].Length);
+                            g.DrawRectangle(new Pen(Color.Red, 2), (match.Index-(leftBorder-1))*gridWidth , gridHeight* (i-(bottomBorder-2)), gridWidth * sequences[j].Length, gridHeight);
                         } 
                     }
 
                 }
 
-               
-                
+
+
                 GraphicsPath clipPath = new GraphicsPath();
                 
                 
