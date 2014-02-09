@@ -69,5 +69,41 @@ namespace researcherApp.Properties {
                 this["pencilSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color pencilColor {
+            get {
+                return ((global::System.Drawing.Color)(this["pencilColor"]));
+            }
+            set {
+                this["pencilColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color sequenceColor {
+            get {
+                return ((global::System.Drawing.Color)(this["sequenceColor"]));
+            }
+            set {
+                this["sequenceColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Yellow")]
+        public global::System.Drawing.Color alertColor {
+            get {
+                return ((global::System.Drawing.Color)(this["alertColor"]));
+            }
+            set {
+                this["alertColor"] = value;
+            }
+        }
     }
 }

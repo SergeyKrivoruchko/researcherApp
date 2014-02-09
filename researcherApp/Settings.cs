@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -19,7 +18,7 @@ namespace researcherApp
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.DialogResult = DialogResult.Cancel;
         }
 
         private void currentSequence_KeyPress(object sender, KeyPressEventArgs e)
@@ -36,46 +35,35 @@ namespace researcherApp
 
         private void deleteSequence_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < sequencesList.Items.Count; i++)
+            int i = 0;
+            while( i<sequencesList.Items.Count)
+            {
                 if (sequencesList.GetItemCheckState(i) == CheckState.Checked)
                     sequencesList.Items.RemoveAt(i);
+                else
+                    i++;
+            }
         }
 
-        private void sequencesList_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            /*if ((sequencesList.SelectedItems.Count == 0)||((e.CurrentValue== CheckState.Checked)&&(sequencesList.SelectedItems.Count==1)))
-                deleteSequence.Enabled = false;
-            else
-                deleteSequence.Enabled = true;*/
-        }
 
-        private void sequencesList_SelectedValueChanged(object sender, EventArgs e)
-        {
-            
-        }
 
         private void accept_Click(object sender, EventArgs e)
         {
             Main m = this.Owner as Main;
-          /*  DialogResult res;
-            if (m.grid_values.Count > Convert.ToInt32(colCount.Text))
-            {
-                res = MessageBox.Show("Количество устанавливаемых столбцов меньше количества столбцов в таблице. Все равно продолжить?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                if (res == DialogResult.OK)
-                    for (int i = Convert.ToInt32(colCount.Text); i < m.grid_values.Count; i++)
-                        m.grid_values.Remove(m.grid_values.ElementAt(m.grid_values.Count-1).Key);
-                else
-                    return;
-            }*/
-            
-            Properties.Settings.Default.gridCols = Convert.ToInt32(colCount.Text);
-            Properties.Settings.Default.gridRows = Convert.ToInt32(rowCount.Text);
+              
+            if (Convert.ToInt32(colCount.Text)>0)
+                Properties.Settings.Default.gridCols = Convert.ToInt32(colCount.Text);
+            if (Convert.ToInt32(rowCount.Text)>0)
+                Properties.Settings.Default.gridRows = Convert.ToInt32(rowCount.Text);
             Properties.Settings.Default.pencilSize = Convert.ToInt32(pencilSize.Value);
             string[] seq = sequencesList.Items.Cast<string>().ToArray();
             if (Properties.Settings.Default.Sequences == null) 
                 Properties.Settings.Default.Sequences = new StringCollection();
             Properties.Settings.Default.Sequences.Clear();
             Properties.Settings.Default.Sequences.AddRange(seq);
+            Properties.Settings.Default.pencilColor = pencilColor.BackColor;
+            Properties.Settings.Default.sequenceColor = sequenceColor.BackColor;
+            Properties.Settings.Default.alertColor = alertColor.BackColor;
             Properties.Settings.Default.Save();
             
             
@@ -89,9 +77,10 @@ namespace researcherApp
                 
             //}
             m.pencilSize.Value = Properties.Settings.Default.pencilSize;
+            m.size.Text = pencilSize.Value.ToString();
             m.sequences = Properties.Settings.Default.Sequences;
 
-            this.Close();
+            this.DialogResult = DialogResult.OK;
 
            
         }
@@ -103,8 +92,20 @@ namespace researcherApp
             pencilSize.Value = Properties.Settings.Default.pencilSize;
             //StringCollection str = new StringCollection();
             //str = Properties.Settings.Default.Sequences;
+
+             pencilColor.BackColor=Properties.Settings.Default.pencilColor;
+             sequenceColor.BackColor= Properties.Settings.Default.sequenceColor ;
+             alertColor.BackColor = Properties.Settings.Default.alertColor;
+
             if (Properties.Settings.Default.Sequences!=null)
             sequencesList.Items.AddRange(Properties.Settings.Default.Sequences.Cast<string>().ToArray());
+        }
+
+        private void colorButton_Click(object sender, EventArgs e)
+        {
+             colorDialog.Color=(sender as Button).BackColor;
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+                (sender as Button).BackColor = colorDialog.Color;
         }
 
        

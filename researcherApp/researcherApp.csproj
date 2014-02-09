@@ -75,6 +75,7 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="ToolStripMenuItem.cs" />
     <EmbeddedResource Include="FileDialog.resx">
       <DependentUpon>FileDialog.cs</DependentUpon>
     </EmbeddedResource>
