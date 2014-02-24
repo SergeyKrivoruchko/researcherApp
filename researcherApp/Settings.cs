@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -28,6 +28,7 @@ namespace researcherApp
 
         private void addSequence_Click(object sender, EventArgs e)
         {
+            
             sequencesList.Items.Add(currentSequence.Text);
             currentSequence.Clear();
             currentSequence.Focus();
@@ -65,21 +66,16 @@ namespace researcherApp
             Properties.Settings.Default.sequenceColor = sequenceColor.BackColor;
             Properties.Settings.Default.alertColor = alertColor.BackColor;
             Properties.Settings.Default.Save();
-            
-            
-            //if ((m.gridCols != Properties.Settings.Default.gridCols) || (m.gridRows != Properties.Settings.Default.gridRows) || (m.sequences!=Properties.Settings.Default.Sequences))
-            //{
-            
+
                 m.gridCols = Properties.Settings.Default.gridCols;
                 m.gridRows = Properties.Settings.Default.gridRows;
                 m.reSizeDrawBuffer();
-                m.Draw_grid(m.grafx.Graphics);
                 
-            //}
+                
+            
             m.pencilSize.Value = Properties.Settings.Default.pencilSize;
             m.size.Text = pencilSize.Value.ToString();
             m.sequences = Properties.Settings.Default.Sequences;
-
             this.DialogResult = DialogResult.OK;
 
            
@@ -107,6 +103,16 @@ namespace researcherApp
             if (colorDialog.ShowDialog() == DialogResult.OK)
                 (sender as Button).BackColor = colorDialog.Color;
         }
+
+        private void currentSequence_TextChanged(object sender, EventArgs e)
+        {
+            if (currentSequence.Text.Length == 0) 
+                addSequence.Enabled = false;
+            else
+                addSequence.Enabled = true;
+        }
+
+
 
        
 

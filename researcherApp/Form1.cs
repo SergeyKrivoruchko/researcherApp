@@ -1,4 +1,4 @@
-п»їusing System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,7 +39,7 @@ namespace researcherApp
         TextBox dinamicTextBox;
         bool isPainting = false, isPencilChecked=false, canDelete=true, isErasing=false, isEraseCheked=false;
         Point PaintFrom = new Point(0, 0);
-        int gridHeight = 20, gridWidth = 70;
+        int gridHeight = 45, gridWidth =45;
         public int gridRows, gridCols, currentPencilSize;
         public StringCollection sequences = new StringCollection();
         private BufferedGraphicsContext context;
@@ -180,7 +180,7 @@ namespace researcherApp
             for (int i = 0; i <= gridCols+1; i++)
                 g.DrawLine(Pens.LightGray, new Point(i * gridWidth, 0), new Point(i * gridWidth, panel1.Height));
 
-            Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
+            Font f = new Font("Arial", (float)(gridHeight - gridHeight / 1.7), GraphicsUnit.Pixel);
            
             
             for (int i = 0; i < table_values.Count; i++)
@@ -198,11 +198,11 @@ namespace researcherApp
             
 
             f.Dispose();
-            f = new Font("Courier New", gridHeight - 9, GraphicsUnit.Pixel);
+            f = new Font("Arial", (float)(gridHeight-gridHeight / 1.5), GraphicsUnit.Pixel);
             for (int i=1; i<=gridRows; i++)
                 g.DrawString(i.ToString(), f, Brushes.DarkSlateGray, Cell_Position(i.ToString(), f, 0, i+1));
-            g.DrawString("Р—РЅР°С‡РµРЅРёСЏ", f, Brushes.Black, Cell_Position("Р—РЅР°С‡РµРЅРёСЏ", f, 0,0));
-            g.DrawString("РЎРІРѕР№СЃС‚РІРѕ 1", f, Brushes.Black, Cell_Position("РЎРІРѕР№СЃС‚РІРѕ 1", f, 0, 1));
+            g.DrawString("Зн.", f, Brushes.Black, Cell_Position("Зн.", f, 0,0));
+            g.DrawString("Св.1", f, Brushes.Black, Cell_Position("Св.1", f, 0, 1));
             
            
             Find_Similar(g);
@@ -212,14 +212,14 @@ namespace researcherApp
         }
 
         private void Find_Similar(Graphics g)
-        {            
-            Font f = new Font("Arial", gridHeight - 6, GraphicsUnit.Pixel);
+        {
+            Font f = new Font("Arial", (float)(gridHeight - gridHeight / 1.7), GraphicsUnit.Pixel);
             for (int i = 0; i < table_values.Count; i++)
                 for (int j = i + 1; j < table_values.Count; j++)
                     if (grid_values[table_values[i]].prop1 == grid_values[table_values[j]].prop2)
                     {
                        
-                        g.FillRectangle(new SolidBrush(alertColor), new Rectangle(gridWidth * (j + 1) + 1, gridHeight * (j - i + 1) + 1, gridWidth - 1, gridHeight - 1));
+                        g.FillRectangle(new SolidBrush(alertColor), new Rectangle(gridWidth * (j + 1) + 1, gridHeight * (j - i + 1) + 1, gridWidth - 2, gridHeight - 2));
                         g.DrawString(grid_values[table_values[j]].prop2.ToString(), f, Brushes.Black, Cell_Position(grid_values[table_values[j]].prop2.ToString(), f, j + 1, j - i + 1));
                     }
 
@@ -228,7 +228,8 @@ namespace researcherApp
         private PointF Cell_Position(string s, Font f, int posX, int posY)
         {
             PointF p = new PointF();
-            p.X = posX * gridWidth + gridWidth / 2 - TextRenderer.MeasureText(s, f).Width / 2;
+            p.X = posX * gridWidth + (float)gridWidth / 2 - (float)TextRenderer.MeasureText(s, f).Width / 2;
+            
             p.Y = posY * gridHeight + gridHeight / 2 - TextRenderer.MeasureText(s, f).Height / 2;
             return p;
         }
@@ -348,7 +349,7 @@ namespace researcherApp
                     g.DrawLine(Pens.LightGray, new Point(i * gridWidth, 0), new Point(i * gridWidth, b.Height));
 
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-                Font f = new Font("Arial", gridHeight-6, GraphicsUnit.Pixel);
+                Font f = new Font("Arial", (float)(gridHeight - gridHeight / 1.7), GraphicsUnit.Pixel);
                
                 if (table_values.Count>0)
                 for (int i=0; i<2; i++)
@@ -358,7 +359,7 @@ namespace researcherApp
 
                         if (((leftBorder + i) - (bottomBorder + j) >= 0)&&(leftBorder + i - 1<table_values.Count))
                             if (grid_values[table_values[leftBorder + i - 1]].prop2 == grid_values[table_values[(leftBorder + i -1) - (bottomBorder+j-1)]].prop1)
-                                g.FillRectangle(new SolidBrush(alertColor), new Rectangle(gridWidth * i + 1, gridHeight * j + 1, gridWidth - 1, gridHeight - 1));
+                                g.FillRectangle(new SolidBrush(alertColor), new Rectangle(gridWidth * i + 1, gridHeight * j + 1, gridWidth - 2, gridHeight - 2));
                         if (leftBorder-1<table_values.Count)
                         if (bottomBorder==0)
                             g.DrawString(table_values[leftBorder - 1].ToString(), f, Brushes.Black, Cell_Position(table_values[leftBorder - 1].ToString(), f, i, 0));
@@ -427,23 +428,20 @@ namespace researcherApp
         private void ClearAllNotes_Click(object sender, EventArgs e)
         {
             Draw_grid(grafx.Graphics);
-            //panel1.Invalidate();
         }
 
-        private void СѓРјРµРЅС€РёС‚СЊР Р°Р·РјРµСЂРЇС‡РµРµРєToolStripMenuItem_Click(object sender, EventArgs e)
+        private void уменшитьРазмерЯчеекToolStripMenuItem_Click(object sender, EventArgs e)
         {
             gridHeight -= 5;
             gridWidth -= 5;
             Draw_grid(grafx.Graphics);
-            //panel1.Invalidate();
         }
 
-        private void СѓРІРµР»РёС‡РёС‚СЊР Р°Р·РјРµСЂРЇС‡РµРµРєToolStripMenuItem_Click(object sender, EventArgs e)
+        private void увеличитьРазмерЯчеекToolStripMenuItem_Click(object sender, EventArgs e)
         {
             gridHeight += 5;
             gridWidth += 5;
             Draw_grid(grafx.Graphics);
-            //panel1.Invalidate();
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -454,7 +452,7 @@ namespace researcherApp
                 dataGridView1.Rows[e.RowIndex].Cells[2].Value = 0;
                 isNewRow = false;
             }
-            //else return;
+           
 
             if (e.RowIndex < grid_values.Count)
            
@@ -509,7 +507,7 @@ namespace researcherApp
         {
 
             if (grid_values.ContainsKey(Convert.ToInt32(addKey.Text)))
-                MessageBox.Show("РўР°Р±Р»РёС†Р° РґР°РЅРЅС‹С… РЅРµ РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ РґРІР° РѕРґРёРЅР°РєРѕРІС‹С… Р·РЅР°С‡РµРЅРёСЏ!", "РћС€РёР±РєР°",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Таблица данных не может содержать два одинаковых значения!", "Ошибка",MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 grid_values.Add(Convert.ToInt32(addKey.Text), new ValueProps(Convert.ToInt32(addProp1.Text), Convert.ToInt32(addProp2.Text)));
@@ -545,10 +543,12 @@ namespace researcherApp
             {
                 panel1.Controls.Remove(dinamicTextBox);
                 dinamicTextBox = new TextBox();
-                dinamicTextBox.Height = gridHeight;
-                dinamicTextBox.Width = gridWidth;
+                dinamicTextBox.Width = gridWidth-2;
+                dinamicTextBox.Font = new Font("Arial", (float)(gridHeight - gridHeight / 1.7), GraphicsUnit.Pixel);
                 dinamicTextBox.Parent = panel1;
-                dinamicTextBox.Location = new Point((e.X / gridWidth) * gridWidth, (e.Y / gridHeight) * gridHeight);
+                dinamicTextBox.BorderStyle = BorderStyle.None;
+                dinamicTextBox.Location = new Point((e.X / gridWidth) * gridWidth+1, (e.Y / gridHeight) * gridHeight+dinamicTextBox.Height/2);
+                dinamicTextBox.TextAlign = HorizontalAlignment.Center;
                 
                 dinamicTextBox.Leave += new EventHandler(deleteTextBox);
                 dinamicTextBox.KeyPress += new KeyPressEventHandler(keyPressTextBox);
@@ -605,57 +605,19 @@ namespace researcherApp
                     table_values.Add(newVal);
                 else
                     table_values[col - 1] = newVal;
-
-            
-           /* if (grid_values.Count > col - 1)
-            {
-                if (row == 0)
-                {
-                    if ((grid_values.ContainsKey(newVal))&&(newVal!=grid_values.ElementAt(col-1).Key))
-                    {
-                        MessageBox.Show("РўР°Р±Р»РёС†Р° РґР°РЅРЅС‹С… РЅРµ РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ РґРІР° РѕРґРёРЅР°РєРѕРІС‹С… Р·РЅР°С‡РµРЅРёСЏ!", "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-            
-                    ValueProps prop = grid_values.ElementAt(col - 1).Value;
-                    grid_values.Remove(grid_values.ElementAt(col - 1).Key);
-                    grid_values.Add(newVal, prop);
-                    dataGridView1.Rows[col - 1].Cells[0].Value = dinamicTextBox.Text;
-                }
-                else
-                    if (row == 1)
-                    {
-                        grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps(newVal, (grid_values.ElementAt(col - 1).Value.prop2));
-                        dataGridView1.Rows[col - 1].Cells[1].Value = dinamicTextBox.Text;
-                    }
-                    else
-                    {
-                        grid_values[(grid_values.ElementAt(col - 1).Key)] = new ValueProps((grid_values.ElementAt(col - 1).Value.prop1), newVal);
-                        dataGridView1.Rows[col - 1].Cells[2].Value = dinamicTextBox.Text;
-                    }
-            }
-            else
-            {
-                if (row == 0)
-                {
-                    grid_values.Add(newVal, new ValueProps());
-                    dataGridView1.Rows.Add();
-                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0].Value = newVal;
-                }
-            }*/
             splitContainer2.Panel2.Focus();
             panel1.Controls.Remove(dinamicTextBox);
             dinamicTextBox.Dispose();
             Draw_grid(grafx.Graphics);
-            //panel1.Invalidate();
+
         }
 
-        private void РІС‹С…РѕРґToolStripMenuItem_Click(object sender, EventArgs e)
+        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void РѕС‡РёСЃС‚РёС‚СЊРўР°Р±Р»РёС†СѓToolStripMenuItem_Click(object sender, EventArgs e)
+        private void очиститьТаблицуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             canDelete = false;
             table_values.Clear();
@@ -683,13 +645,13 @@ namespace researcherApp
             if ((dataGridView1[e.ColumnIndex, e.RowIndex].Value == null) || (e.FormattedValue.ToString() != dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString()))
             if (grid_values.ContainsKey(Convert.ToInt32(e.FormattedValue)))
             {
-                MessageBox.Show("РўР°Р±Р»РёС†Р° РґР°РЅРЅС‹С… РЅРµ РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ РґРІР° РѕРґРёРЅР°РєРѕРІС‹С… Р·РЅР°С‡РµРЅРёСЏ!", "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Таблица данных не может содержать два одинаковых значения!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.Cancel = true;
                 
             }
         }
 
-        private void РЅР°СЃС‚СЂРѕР№РєР°ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void настройкаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings f = new Settings();
             f.Owner = this;
@@ -701,22 +663,23 @@ namespace researcherApp
                 pencilColor = Properties.Settings.Default.pencilColor;
                 sequenceColor = Properties.Settings.Default.sequenceColor;
                 colorButton.BackColor = pencilColor;
+                Draw_grid(grafx.Graphics);
             }
         }
 
-        private void РїРѕРєР°Р·Р°С‚СЊР’РµСЂС…РЅСЋСЋРџР°РЅРµР»СЊToolStripMenuItem_Click(object sender, EventArgs e)
+        private void показатьВерхнююПанельToolStripMenuItem_Click(object sender, EventArgs e)
         {
             splitContainer2.Panel1Collapsed = !splitContainer2.Panel1Collapsed;
             showTopPanel.Checked = !showTopPanel.Checked;
         }
 
-        private void РїРѕРєР°Р·Р°С‚СЊР›РµРІСѓСЋРџР°РЅРµР»СЊToolStripMenuItem_Click(object sender, EventArgs e)
+        private void показатьЛевуюПанельToolStripMenuItem_Click(object sender, EventArgs e)
         {
             splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
             showLeftPanel.Checked = !showLeftPanel.Checked;
         }
 
-        private void РµРєСЃРїРѕСЂС‚РўР°Р±Р»РёС†С‹ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void експортТаблицыToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog.ShowDialog();
             if (saveFileDialog.FileName != "")
@@ -729,8 +692,8 @@ namespace researcherApp
                 ObjWorkBook = ObjExcel.Workbooks.Add(System.Reflection.Missing.Value);
 
                 ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[1];
-                ObjExcel.Cells[1, 1] = "Р—РЅР°С‡РµРЅРёСЏ";
-                ObjExcel.Cells[2, 1] = "РЎРІРѕР№СЃС‚РІРѕ1";
+                ObjExcel.Cells[1, 1] = "Значения";
+                ObjExcel.Cells[2, 1] = "Свойство1";
                 for (int i = 1; i <= gridRows; i++)
                     ObjExcel.Cells[i+2, 1]=i;
                 for (int i=0; i<table_values.Count; i++)
@@ -815,7 +778,7 @@ namespace researcherApp
             {
                 if (table_values.Count == gridCols)
                 {
-                    MessageBox.Show("Р’СЃСЏ С‚Р°Р±Р»РёС†Р° СѓР¶Рµ Р·Р°РїРѕР»РЅРµРЅР° Р·РЅР°С‡РµРЅРёСЏРјРё!", "РЎРѕРѕР±С‰РµРЅРёРµ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Вся таблица уже заполнена значениями!", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
 
                 }
@@ -824,7 +787,7 @@ namespace researcherApp
                 Draw_grid(grafx.Graphics);
             }
             else
-                toolTip1.Show("Р’РІРѕРґРёРјРѕРµ С‡РёСЃР»Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ СЃ С‚Р°Р±Р»РёС†С‹ Р·РЅР°С‡РµРЅРёР№", textBox1, textBox1.Location.X-35 , textBox1.Location.Y-65, 3000);
+                toolTip1.Show("Вводимое число должно быть с таблицы значений", textBox1, textBox1.Location.X-35 , textBox1.Location.Y-65, 3000);
         }
 
         private void pencilSize_Scroll(object sender, EventArgs e)
@@ -863,7 +826,7 @@ namespace researcherApp
         }
 
 
-        private void РєРѕР»РёС‡РµСЃС‚РІРѕРЎС‚СЂРѕРєToolStripMenuItem1_DropDownClosed(object sender, EventArgs e)
+        private void количествоСтрокToolStripMenuItem1_DropDownClosed(object sender, EventArgs e)
         {
             gridRows = Convert.ToInt32(toolStripTextBox1.Text);
             Properties.Settings.Default.gridRows = gridRows;
@@ -871,7 +834,7 @@ namespace researcherApp
             Draw_grid(grafx.Graphics);
         }
 
-        private void РєРѕР»РёС‡РµСЃС‚РІРѕРЎС‚РѕР»Р±С†РѕРІToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        private void количествоСтолбцовToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
         {
             gridCols = Convert.ToInt32(toolStripTextBox2.Text);
             Properties.Settings.Default.gridCols = gridCols;

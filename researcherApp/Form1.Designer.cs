@@ -416,7 +416,6 @@
             this.pencil.TabIndex = 2;
             this.pencil.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.pencil.UseVisualStyleBackColor = true;
-            this.pencil.CheckedChanged += new System.EventHandler(this.pencil_CheckedChanged);
             this.pencil.Click += new System.EventHandler(this.pencil_Click);
             // 
             // panel1
@@ -532,7 +531,7 @@
             this.количествоСтрокToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox1});
             this.количествоСтрокToolStripMenuItem1.Name = "количествоСтрокToolStripMenuItem1";
-            this.количествоСтрокToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
+            this.количествоСтрокToolStripMenuItem1.Size = new System.Drawing.Size(246, 22);
             this.количествоСтрокToolStripMenuItem1.Text = "Количество строк";
             this.количествоСтрокToolStripMenuItem1.DropDownClosed += new System.EventHandler(this.количествоСтрокToolStripMenuItem1_DropDownClosed);
             // 
@@ -550,7 +549,7 @@
             this.количествоСтолбцовToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox2});
             this.количествоСтолбцовToolStripMenuItem.Name = "количествоСтолбцовToolStripMenuItem";
-            this.количествоСтолбцовToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
+            this.количествоСтолбцовToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
             this.количествоСтолбцовToolStripMenuItem.Text = "Количество столбцов";
             this.количествоСтолбцовToolStripMenuItem.DropDownClosed += new System.EventHandler(this.количествоСтолбцовToolStripMenuItem_DropDownClosed);
             // 
@@ -567,7 +566,7 @@
             this.showTopPanel.Checked = true;
             this.showTopPanel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showTopPanel.Name = "showTopPanel";
-            this.showTopPanel.Size = new System.Drawing.Size(220, 22);
+            this.showTopPanel.Size = new System.Drawing.Size(246, 22);
             this.showTopPanel.Text = "Показать верхнюю панель";
             this.showTopPanel.Click += new System.EventHandler(this.показатьВерхнююПанельToolStripMenuItem_Click);
             // 
@@ -576,13 +575,14 @@
             this.showLeftPanel.Checked = true;
             this.showLeftPanel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showLeftPanel.Name = "showLeftPanel";
-            this.showLeftPanel.Size = new System.Drawing.Size(220, 22);
+            this.showLeftPanel.Size = new System.Drawing.Size(246, 22);
             this.showLeftPanel.Text = "Показать левую панель";
             this.showLeftPanel.Click += new System.EventHandler(this.показатьЛевуюПанельToolStripMenuItem_Click);
             // 
             // уменшитьРазмерЯчеекToolStripMenuItem1
             // 
             this.уменшитьРазмерЯчеекToolStripMenuItem1.Name = "уменшитьРазмерЯчеекToolStripMenuItem1";
+            this.уменшитьРазмерЯчеекToolStripMenuItem1.ShortcutKeyDisplayString = "";
             this.уменшитьРазмерЯчеекToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
             this.уменшитьРазмерЯчеекToolStripMenuItem1.Text = "Уменшить размер ячеек";
             this.уменшитьРазмерЯчеекToolStripMenuItem1.Click += new System.EventHandler(this.уменшитьРазмерЯчеекToolStripMenuItem_Click);
@@ -590,6 +590,8 @@
             // увеличитьРазмерЯчеекToolStripMenuItem1
             // 
             this.увеличитьРазмерЯчеекToolStripMenuItem1.Name = "увеличитьРазмерЯчеекToolStripMenuItem1";
+            this.увеличитьРазмерЯчеекToolStripMenuItem1.ShortcutKeyDisplayString = "";
+            this.увеличитьРазмерЯчеекToolStripMenuItem1.ShowShortcutKeys = false;
             this.увеличитьРазмерЯчеекToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
             this.увеличитьРазмерЯчеекToolStripMenuItem1.Text = "Увеличить размер ячеек";
             this.увеличитьРазмерЯчеекToolStripMenuItem1.Click += new System.EventHandler(this.увеличитьРазмерЯчеекToolStripMenuItem_Click);

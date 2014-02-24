@@ -156,6 +156,7 @@
             // 
             // addSequence
             // 
+            this.addSequence.Enabled = false;
             this.addSequence.ForeColor = System.Drawing.SystemColors.ControlText;
             this.addSequence.Location = new System.Drawing.Point(253, 26);
             this.addSequence.Name = "addSequence";
@@ -163,6 +164,7 @@
             this.addSequence.TabIndex = 9;
             this.addSequence.Text = "Добавить";
             this.addSequence.UseVisualStyleBackColor = true;
+            this.addSequence.Click += new System.EventHandler(this.addSequence_Click);
             // 
             // currentSequence
             // 
@@ -171,6 +173,8 @@
             this.currentSequence.Name = "currentSequence";
             this.currentSequence.Size = new System.Drawing.Size(216, 20);
             this.currentSequence.TabIndex = 8;
+            this.currentSequence.TextChanged += new System.EventHandler(this.currentSequence_TextChanged);
+            this.currentSequence.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.currentSequence_KeyPress);
             // 
             // label4
             // 
